@@ -15,6 +15,7 @@
         href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <style>
         :root {
@@ -2084,6 +2085,303 @@
                 display: none
             }
         }
+
+
+        /* ===== LATEST DROP / ANNOUNCEMENT ORB ===== */
+        .announcement-orb {
+            position: fixed;
+            left: 22px;
+            top: 48%;
+            transform: translateY(-50%);
+            z-index: 125;
+            width: 132px;
+            height: 132px;
+            border: 0;
+            border-radius: 50%;
+            background: radial-gradient(circle at 35% 28%, #fff7bd 0 12%, #ffd45c 30%, #e9a718 68%, #b87308 100%);
+            color: #392600;
+            box-shadow: 0 18px 44px rgba(167, 109, 0, .33), 0 0 0 8px rgba(255, 212, 92, .16);
+            display: grid;
+            place-items: center;
+            text-align: center;
+            padding: 20px;
+            isolation: isolate;
+            animation: announceFloat 3.4s ease-in-out infinite;
+            transition: .25s ease
+        }
+
+        .announcement-orb:hover {
+            transform: translateY(-50%) scale(1.055);
+            box-shadow: 0 22px 54px rgba(167, 109, 0, .42), 0 0 0 11px rgba(255, 212, 92, .17)
+        }
+
+        .announcement-orb:before,
+        .announcement-orb:after {
+            content: "";
+            position: absolute;
+            border-radius: 50%;
+            z-index: -1;
+            pointer-events: none
+        }
+
+        .announcement-orb:before {
+            width: 18px;
+            height: 18px;
+            background: #fff3a6;
+            right: -12px;
+            top: 11px;
+            box-shadow: -130px 22px 0 2px rgba(255, 201, 57, .58), -16px 128px 0 -3px rgba(255, 151, 56, .62), 22px 108px 0 -4px rgba(108, 76, 241, .36);
+            animation: announceBubble 2.6s ease-in-out infinite
+        }
+
+        .announcement-orb:after {
+            inset: -9px;
+            border: 1px dashed rgba(182, 119, 0, .45);
+            animation: announceSpin 12s linear infinite
+        }
+
+        .announcement-orb .announce-kicker {
+            display: block;
+            font-size: .56rem;
+            line-height: 1;
+            text-transform: uppercase;
+            letter-spacing: .14em;
+            font-weight: 900;
+            margin-bottom: 6px
+        }
+
+        .announcement-orb .announce-title {
+            display: block;
+            font-family: Manrope, sans-serif;
+            font-size: .86rem;
+            line-height: 1.12;
+            font-weight: 900;
+            letter-spacing: -.03em
+        }
+
+        .announcement-orb .announce-arrow {
+            margin-top: 7px;
+            font-size: .72rem
+        }
+
+        .announcement-dot {
+            position: absolute;
+            right: 7px;
+            top: 7px;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #ff5b70;
+            border: 3px solid #fff;
+            box-shadow: 0 0 0 0 rgba(255, 91, 112, .45);
+            animation: announcePing 1.6s infinite
+        }
+
+        @keyframes announceFloat {
+            50% {
+                transform: translateY(calc(-50% - 8px))
+            }
+        }
+
+        @keyframes announceBubble {
+            50% {
+                transform: translateY(-8px) scale(1.08)
+            }
+        }
+
+        @keyframes announceSpin {
+            to {
+                transform: rotate(360deg)
+            }
+        }
+
+        @keyframes announcePing {
+            70% {
+                box-shadow: 0 0 0 10px rgba(255, 91, 112, 0)
+            }
+        }
+
+        .announcement-modal {
+            position: fixed;
+            inset: 0;
+            z-index: 1500;
+            background: rgba(19, 20, 45, .82);
+            display: none;
+            place-items: center;
+            padding: 22px;
+            backdrop-filter: blur(5px)
+        }
+
+        .announcement-modal.open {
+            display: grid
+        }
+
+        .announcement-shell {
+            width: min(760px, 100%);
+            max-height: min(88vh, 860px);
+            overflow: auto;
+            background: #fff;
+            border-radius: 30px;
+            box-shadow: 0 30px 90px rgba(0, 0, 0, .32);
+            position: relative
+        }
+
+        .announcement-close {
+            position: absolute;
+            right: 14px;
+            top: 14px;
+            z-index: 5;
+            width: 44px;
+            height: 44px;
+            border: 0;
+            border-radius: 14px;
+            background: #fff;
+            color: #292944;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, .16)
+        }
+
+        .announcement-media {
+            position: relative;
+            background: #15162d
+        }
+
+        .announcement-media img {
+            width: 100%;
+            max-height: 520px;
+            object-fit: cover
+        }
+
+        .announcement-media iframe {
+            width: 100%;
+            aspect-ratio: 16/9;
+            border: 0;
+            display: block
+        }
+
+        .announcement-content {
+            padding: 26px 28px 30px
+        }
+
+        .announcement-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 7px 10px;
+            border-radius: 999px;
+            background: #fff4cc;
+            color: #8a5a00;
+            font-size: .7rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: .1em
+        }
+
+        .announcement-content h3 {
+            font-size: clamp(1.7rem, 4vw, 2.5rem);
+            margin: 12px 0 8px
+        }
+
+        .announcement-content p {
+            margin: 0
+        }
+
+        .announcement-progress {
+            height: 6px;
+            background: #eeeaf7;
+            margin-top: 22px;
+            border-radius: 999px;
+            overflow: hidden;
+            display: none
+        }
+
+        .announcement-progress.active {
+            display: block
+        }
+
+        .announcement-progress span {
+            display: block;
+            height: 100%;
+            width: 0;
+            background: linear-gradient(90deg, #ffd45c, #ff985b, #ff6f7f);
+            border-radius: 999px
+        }
+
+        .announcement-countdown {
+            display: none;
+            margin-top: 10px;
+            font-size: .76rem;
+            color: #77788d
+        }
+
+        .announcement-countdown.active {
+            display: block
+        }
+
+        .announcement-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 22px
+        }
+
+        @media(max-width:720px) {
+            .announcement-orb {
+                left: 10px;
+                top: auto;
+                bottom: 92px;
+                transform: none;
+                width: 96px;
+                height: 96px;
+                padding: 13px;
+                box-shadow: 0 14px 34px rgba(167, 109, 0, .32), 0 0 0 6px rgba(255, 212, 92, .14);
+                animation: announceFloatMobile 3.4s ease-in-out infinite
+            }
+
+            .announcement-orb:hover {
+                transform: scale(1.045)
+            }
+
+            .announcement-orb .announce-kicker {
+                font-size: .46rem;
+                margin-bottom: 4px
+            }
+
+            .announcement-orb .announce-title {
+                font-size: .69rem
+            }
+
+            .announcement-orb .announce-arrow {
+                font-size: .58rem;
+                margin-top: 4px
+            }
+
+            .announcement-dot {
+                width: 15px;
+                height: 15px;
+                right: 3px;
+                top: 3px
+            }
+
+            .announcement-shell {
+                border-radius: 24px
+            }
+
+            .announcement-content {
+                padding: 22px 20px 24px
+            }
+
+            .announcement-media img {
+                max-height: 58vh;
+                object-fit: contain;
+                background: #15162d
+            }
+
+            @keyframes announceFloatMobile {
+                50% {
+                    transform: translateY(-7px)
+                }
+            }
+        }
     </style>
 </head>
 
@@ -2183,7 +2481,7 @@
                     <p>Every video below links to the real Echoes of Mercy release on YouTube. Play it directly on the
                         website or open it on YouTube.</p>
                 </div>
-                <div class="music-grid">
+                <div class="music-grid" id="musicGrid">
                     <article class="music-card reveal">
                         <div class="video-cover"><img src="https://img.youtube.com/vi/iMfJ_3bzPoQ/hqdefault.jpg"
                                 alt="Ngegazi Lakhe video thumbnail"><span class="number-pill">01 • 05:55</span><button
@@ -2371,6 +2669,34 @@
         </div>
     </footer>
 
+
+
+    <!-- Latest song / event notification -->
+    <button class="announcement-orb" id="announcementOrb" aria-label="Open latest Echoes of Mercy update">
+        <span class="announcement-dot" aria-hidden="true"></span>
+        <span><span class="announce-kicker">New update</span><span class="announce-title"
+                id="announcementOrbTitle">Check our latest song</span><span class="announce-arrow"><i
+                    class="fa-solid fa-arrow-up-right-from-square"></i></span></span>
+    </button>
+
+    <div class="announcement-modal" id="announcementModal" aria-hidden="true">
+        <div class="announcement-shell" role="dialog" aria-modal="true" aria-labelledby="announcementTitle">
+            <button class="announcement-close" id="announcementClose" aria-label="Close update"><i
+                    class="fa-solid fa-xmark"></i></button>
+            <div class="announcement-media" id="announcementMedia"></div>
+            <div class="announcement-content">
+                <span class="announcement-badge" id="announcementBadge"><i class="fa-solid fa-bolt"></i> Latest
+                    update</span>
+                <h3 id="announcementTitle">Latest from Echoes of Mercy</h3>
+                <p id="announcementText"></p>
+                <div class="announcement-progress" id="announcementProgress"><span id="announcementProgressBar"></span>
+                </div>
+                <div class="announcement-countdown" id="announcementCountdown"></div>
+                <div class="announcement-actions" id="announcementActions"></div>
+            </div>
+        </div>
+    </div>
+
     <div class="social-fab" id="socialFab">
         <div class="fab-stack">
             <div class="fab-item"><span class="fab-label">Share website</span><button class="fab-link share"
@@ -2409,8 +2735,68 @@
         const modal = document.getElementById('videoModal'), frame = document.getElementById('modalFrame'), caption = document.getElementById('modalCaption');
         function openVideo(id, title) { frame.innerHTML = `<iframe src="https://www.youtube.com/embed/${id}?autoplay=1&rel=0" title="${title}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>`; caption.textContent = title + ' — Echoes of Mercy Gospel Group'; modal.classList.add('open'); document.body.classList.add('modal-open'); modal.setAttribute('aria-hidden', 'false') }
         function closeVideo() { frame.innerHTML = ''; modal.classList.remove('open'); document.body.classList.remove('modal-open'); modal.setAttribute('aria-hidden', 'true') }
-        document.querySelectorAll('.play-video').forEach(btn => btn.addEventListener('click', () => openVideo(btn.dataset.video, btn.dataset.title)));
+        document.addEventListener('click', e => { const btn = e.target.closest('.play-video'); if (btn) openVideo(btn.dataset.video, btn.dataset.title) });
         document.getElementById('modalClose').addEventListener('click', closeVideo); modal.addEventListener('click', e => { if (e.target === modal) closeVideo() }); document.addEventListener('keydown', e => { if (e.key === 'Escape') closeVideo() });
+
+
+
+        /* Live Supabase content */
+        const SUPABASE_URL = 'https://yppzepffoyhcujddaczj.supabase.co';
+        const SUPABASE_KEY = 'sb_publishable_NiPwmeMuNV2mdy6TZ4n5yg_ulciLV9J';
+        const siteDb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        const defaultAnnouncement = {
+            type: 'song', title: 'Ngegazi Lakhe',
+            body: 'Listen to our featured release. Enjoy a 30-second preview, then continue on YouTube.',
+            youtube_id: 'iMfJ_3bzPoQ', youtube_url: 'https://youtu.be/iMfJ_3bzPoQ?si=J9YskPCpGhsvw2bb',
+            poster_url: '', event_url: ''
+        };
+        let announcement = defaultAnnouncement;
+        const esc = v => String(v ?? '').replace(/[&<>'"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[c]));
+        const announcementOrb = document.getElementById('announcementOrb'), announcementOrbTitle = document.getElementById('announcementOrbTitle'), announcementModal = document.getElementById('announcementModal'), announcementClose = document.getElementById('announcementClose'), announcementMedia = document.getElementById('announcementMedia'), announcementBadge = document.getElementById('announcementBadge'), announcementTitle = document.getElementById('announcementTitle'), announcementText = document.getElementById('announcementText'), announcementActions = document.getElementById('announcementActions'), announcementProgress = document.getElementById('announcementProgress'), announcementProgressBar = document.getElementById('announcementProgressBar'), announcementCountdown = document.getElementById('announcementCountdown');
+        let announcementTimer = null, announcementTick = null;
+        function clearAnnouncementTimers() { clearTimeout(announcementTimer); clearInterval(announcementTick); announcementTimer = null; announcementTick = null }
+        function normalizeAnnouncement(row) {
+            if (!row) return defaultAnnouncement;
+            return { type: row.type || 'announcement', title: row.title || 'Latest from Echoes of Mercy', body: row.body || '', youtube_id: row.youtube_id || '', youtube_url: row.youtube_url || '', poster_url: row.poster_url || '', event_url: row.event_url || '' };
+        }
+        async function loadLiveAnnouncement() {
+            const { data, error } = await siteDb.from('latest_updates').select('*').eq('is_active', true).order('published_at', { ascending: false }).limit(1).maybeSingle();
+            if (!error && data) announcement = normalizeAnnouncement(data);
+            const isSong = announcement.type === 'song';
+            announcementOrbTitle.textContent = isSong ? 'Check our latest song' : announcement.type === 'event' ? 'See our latest event' : 'See our latest update';
+        }
+        function renderAnnouncement() {
+            const isSong = announcement.type === 'song';
+            announcementOrbTitle.textContent = isSong ? 'Check our latest song' : announcement.type === 'event' ? 'See our latest event' : 'See our latest update';
+            announcementBadge.innerHTML = isSong ? '<i class="fa-solid fa-music"></i> Latest song' : announcement.type === 'event' ? '<i class="fa-solid fa-calendar-days"></i> Upcoming event' : '<i class="fa-solid fa-bullhorn"></i> Latest update';
+            announcementTitle.textContent = announcement.title || 'Latest from Echoes of Mercy'; announcementText.textContent = announcement.body || '';
+            announcementActions.innerHTML = ''; announcementMedia.innerHTML = ''; announcementProgress.classList.remove('active'); announcementCountdown.classList.remove('active'); announcementProgressBar.style.width = '0';
+            if (isSong && announcement.youtube_id) {
+                announcementMedia.innerHTML = `<iframe src="https://www.youtube.com/embed/${encodeURIComponent(announcement.youtube_id)}?autoplay=1&rel=0&start=0" title="${esc(announcement.title || 'Echoes of Mercy song')}" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>`;
+                announcementProgress.classList.add('active'); announcementCountdown.classList.add('active');
+                const a = document.createElement('a'); a.className = 'btn btn-youtube'; a.href = announcement.youtube_url; a.target = '_blank'; a.rel = 'noopener'; a.innerHTML = '<i class="fa-brands fa-youtube"></i> Open YouTube now'; announcementActions.appendChild(a);
+                let left = 30; announcementCountdown.textContent = `Continuing to YouTube in ${left}s`; requestAnimationFrame(() => { announcementProgressBar.style.transition = 'width 30s linear'; announcementProgressBar.style.width = '100%' });
+                announcementTick = setInterval(() => { left--; announcementCountdown.textContent = `Continuing to YouTube in ${Math.max(left, 0)}s` }, 1000);
+                announcementTimer = setTimeout(() => { clearAnnouncementTimers(); window.location.href = announcement.youtube_url }, 30000);
+            } else if (announcement.poster_url) {
+                announcementMedia.innerHTML = `<img src="${esc(announcement.poster_url)}" alt="${esc(announcement.title || 'Echoes of Mercy update artwork')}">`;
+                if (announcement.type === 'event' && announcement.event_url) { const a = document.createElement('a'); a.className = 'btn btn-primary'; a.href = announcement.event_url; a.target = '_blank'; a.rel = 'noopener'; a.innerHTML = '<i class="fa-solid fa-calendar-check"></i> View event details'; announcementActions.appendChild(a) }
+                if (announcement.type === 'event') { const w = document.createElement('a'); w.className = 'btn btn-light'; w.href = 'https://wa.me/27820878978'; w.target = '_blank'; w.rel = 'noopener'; w.innerHTML = '<i class="fa-brands fa-whatsapp"></i> Ask about this event'; announcementActions.appendChild(w) }
+            } else { announcementMedia.innerHTML = '<div style="min-height:260px;display:grid;place-items:center;color:#fff;font-size:3rem"><i class="fa-solid fa-bullhorn"></i></div>' }
+        }
+        function openAnnouncement() { clearAnnouncementTimers(); renderAnnouncement(); announcementModal.classList.add('open'); announcementModal.setAttribute('aria-hidden', 'false'); document.body.classList.add('modal-open') }
+        function closeAnnouncement() { clearAnnouncementTimers(); announcementMedia.innerHTML = ''; announcementProgressBar.style.transition = 'none'; announcementModal.classList.remove('open'); announcementModal.setAttribute('aria-hidden', 'true'); document.body.classList.remove('modal-open') }
+        announcementOrb.addEventListener('click', openAnnouncement); announcementClose.addEventListener('click', closeAnnouncement); announcementModal.addEventListener('click', e => { if (e.target === announcementModal) closeAnnouncement() }); document.addEventListener('keydown', e => { if (e.key === 'Escape' && announcementModal.classList.contains('open')) closeAnnouncement() });
+
+        function renderSongs(songs) {
+            const grid = document.getElementById('musicGrid'); if (!grid || !songs?.length) return;
+            grid.innerHTML = songs.map((song, i) => `<article class="music-card reveal visible"><div class="video-cover"><img src="https://img.youtube.com/vi/${esc(song.youtube_id)}/hqdefault.jpg" alt="${esc(song.title)} video thumbnail" loading="lazy"><span class="number-pill">${String(i + 1).padStart(2, '0')}${song.duration ? ' • ' + esc(song.duration) : ''}</span><button class="mini-play play-video" data-video="${esc(song.youtube_id)}" data-title="${esc(song.title)}" aria-label="Play ${esc(song.title)}"><i class="fa-solid fa-play"></i></button></div><div class="music-body"><h3>${esc(song.title)}</h3><p>${esc(song.description || ('Written by ' + (song.writer || 'Echoes of Mercy') + '.'))}</p><div class="meta-row"><div><b>Genre</b>${esc(song.genre || 'Gospel')}</div><div><b>Writer</b>${esc(song.writer || 'Echoes of Mercy')}</div></div><a class="btn btn-youtube watch-link" href="${esc(song.youtube_url)}" target="_blank" rel="noopener"><i class="fa-brands fa-youtube"></i> Watch on YouTube</a></div></article>`).join('');
+        }
+        async function loadSongsFromSupabase() {
+            const { data, error } = await siteDb.from('songs').select('*').eq('is_published', true).order('display_order').order('created_at');
+            if (!error && data?.length) renderSongs(data);
+        }
+        loadLiveAnnouncement(); loadSongsFromSupabase();
 
         document.getElementById('bookingForm').addEventListener('submit', e => { e.preventDefault(); const name = document.getElementById('name').value.trim(), event = document.getElementById('event').value.trim(), date = document.getElementById('date').value || 'Not specified', venue = document.getElementById('venue').value.trim() || 'Not specified', message = document.getElementById('message').value.trim() || 'No additional message'; const text = `Hello Echoes of Mercy Gospel Group,\n\nI would like to make a booking enquiry.\n\nName: ${name}\nEvent: ${event}\nDate: ${date}\nVenue/Town: ${venue}\n\nMessage: ${message}`; window.open(`https://wa.me/27820878978?text=${encodeURIComponent(text)}`, '_blank', 'noopener') });
 
