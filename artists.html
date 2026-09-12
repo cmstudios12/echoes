@@ -1,0 +1,835 @@
+<!doctype html>
+<html lang="en-ZA">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#6C4CF1">
+    <meta name="description" content="Meet the artists of Echoes of Mercy Gospel Group from Tonga, Mpumalanga.">
+    <title>Our Artists | Echoes of Mercy Gospel Group</title>
+
+    <link rel="icon" type="image/png" href="logo.png">
+    <link rel="shortcut icon" href="logo.png">
+    <link rel="apple-touch-icon" href="logo.png">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <style>
+        :root{
+            --ink:#1f2140;
+            --muted:#72748c;
+            --paper:#fffdf9;
+            --white:#fff;
+            --line:#e7e7f1;
+            --purple:#6c4cf1;
+            --violet:#8e5df5;
+            --blue:#2f8cff;
+            --cyan:#21b8c4;
+            --coral:#ff6f7f;
+            --yellow:#ffd45c;
+            --green:#22b983;
+            --soft-purple:#f0edff;
+            --soft-blue:#edf6ff;
+            --soft-coral:#fff0f2;
+            --soft-green:#eafaf4;
+            --shadow:0 24px 64px rgba(56,48,106,.13);
+            --shadow-sm:0 12px 32px rgba(56,48,106,.09);
+            --max:1200px;
+        }
+
+        *{box-sizing:border-box}
+        html{scroll-behavior:smooth}
+        body{
+            margin:0;
+            font-family:"DM Sans",system-ui,sans-serif;
+            color:var(--ink);
+            background:var(--paper);
+            overflow-x:hidden;
+        }
+        a{color:inherit;text-decoration:none}
+        img{display:block;max-width:100%}
+        button{font:inherit;cursor:pointer}
+        .container{width:min(calc(100% - 40px),var(--max));margin-inline:auto}
+
+        h1,h2,h3{
+            font-family:"Manrope",sans-serif;
+            margin:0;
+            letter-spacing:-.04em;
+        }
+
+        /* Header */
+        .site-header{
+            position:sticky;
+            top:0;
+            z-index:100;
+            background:rgba(255,253,249,.96);
+            border-bottom:1px solid var(--line);
+        }
+        .nav{
+            min-height:84px;
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            gap:24px;
+        }
+        .brand{display:flex;align-items:center;gap:12px}
+        .brand img{
+            width:54px;height:54px;object-fit:contain;
+            background:#fff;border:1px solid var(--line);
+            border-radius:14px;padding:3px;
+        }
+        .brand strong{display:block;font-family:"Manrope";font-size:1rem}
+        .brand span{display:block;color:var(--muted);font-size:.73rem;margin-top:2px}
+        .nav-links{
+            display:flex;align-items:center;gap:28px;
+            color:#56586e;font-weight:800;font-size:.9rem;
+        }
+        .nav-links a{position:relative}
+        .nav-links a:after{
+            content:"";position:absolute;left:0;bottom:-9px;
+            width:0;height:2px;background:linear-gradient(90deg,var(--coral),var(--purple));
+            transition:.2s;
+        }
+        .nav-links a:hover:after,.nav-links a.active:after{width:100%}
+
+        .header-btn{
+            min-height:48px;padding:0 18px;border-radius:14px;
+            background:linear-gradient(135deg,var(--purple),var(--blue));
+            color:#fff;font-weight:800;display:inline-flex;align-items:center;gap:9px;
+            box-shadow:0 10px 24px rgba(108,76,241,.22);
+        }
+
+        .menu-toggle{
+            display:none;width:46px;height:46px;border-radius:14px;
+            border:1px solid var(--line);background:#fff;color:var(--ink);
+        }
+        .mobile-menu{
+            display:none;position:fixed;top:92px;left:20px;right:20px;
+            padding:10px;background:#fff;border:1px solid var(--line);
+            border-radius:20px;box-shadow:var(--shadow);z-index:120;
+        }
+        .mobile-menu.show{display:grid}
+        .mobile-menu a{padding:14px;border-radius:12px;font-weight:800}
+        .mobile-menu a:hover{background:var(--soft-purple);color:var(--purple)}
+
+        /* Hero */
+        .artists-hero{
+            position:relative;
+            overflow:hidden;
+            padding:90px 0 78px;
+            background:
+                radial-gradient(circle at 12% 18%,rgba(255,111,127,.18),transparent 25%),
+                radial-gradient(circle at 86% 10%,rgba(47,140,255,.15),transparent 25%),
+                linear-gradient(180deg,#fffdf9,#f8f6ff);
+        }
+        .artists-hero:after{
+            content:"";position:absolute;width:460px;height:460px;
+            right:-180px;bottom:-260px;border-radius:50%;
+            border:72px solid rgba(108,76,241,.05);
+        }
+        .hero-content{position:relative;z-index:2;max-width:850px}
+        .eyebrow{
+            display:inline-flex;align-items:center;gap:10px;
+            color:var(--purple);font-size:.76rem;font-weight:800;
+            letter-spacing:.16em;text-transform:uppercase;margin-bottom:18px;
+        }
+        .eyebrow:before{
+            content:"";width:28px;height:3px;border-radius:99px;
+            background:linear-gradient(90deg,var(--coral),var(--purple));
+        }
+        .artists-hero h1{
+            font-size:clamp(3.2rem,7vw,6.7rem);
+            line-height:.93;
+        }
+        .artists-hero h1 span{color:var(--purple)}
+        .artists-hero p{
+            max-width:710px;margin:24px 0 0;
+            font-size:1.08rem;line-height:1.8;color:var(--muted);
+        }
+
+        .hero-stats{
+            display:flex;gap:14px;flex-wrap:wrap;margin-top:32px;
+        }
+        .stat-pill{
+            display:flex;align-items:center;gap:10px;
+            background:#fff;border:1px solid var(--line);
+            padding:12px 15px;border-radius:16px;box-shadow:var(--shadow-sm);
+        }
+        .stat-pill i{
+            width:38px;height:38px;border-radius:12px;
+            display:grid;place-items:center;background:var(--soft-purple);color:var(--purple);
+        }
+        .stat-pill b{display:block;font-size:.84rem}
+        .stat-pill small{display:block;color:var(--muted);font-size:.7rem;margin-top:2px}
+
+        /* Artists */
+        .artists-section{padding:92px 0 110px;background:#fff}
+        .section-head{
+            display:flex;justify-content:space-between;align-items:end;
+            gap:40px;margin-bottom:42px;
+        }
+        .section-head h2{font-size:clamp(2.2rem,4vw,4rem);line-height:1}
+        .section-head p{max-width:520px;color:var(--muted);line-height:1.7;margin:0}
+
+        .artist-grid{
+            display:grid;
+            grid-template-columns:repeat(3,minmax(0,1fr));
+            gap:24px;
+        }
+
+        .artist-card{
+            background:#fff;
+            border:1px solid var(--line);
+            border-radius:28px;
+            overflow:hidden;
+            box-shadow:0 12px 34px rgba(56,48,106,.07);
+            transition:transform .28s ease,box-shadow .28s ease,border-color .28s ease;
+            position:relative;
+        }
+        .artist-card:hover{
+            transform:translateY(-7px);
+            box-shadow:var(--shadow);
+            border-color:#d9d3ff;
+        }
+        .artist-card:before{
+            content:"";position:absolute;top:0;left:0;right:0;height:4px;
+            background:linear-gradient(90deg,var(--coral),var(--purple),var(--blue));
+            z-index:4;
+        }
+
+        .artist-photo{
+            position:relative;aspect-ratio:4/4.8;background:#eee;
+            overflow:hidden;
+        }
+        .artist-photo img{
+            width:100%;height:100%;object-fit:cover;object-position:center top;
+            transition:transform .45s ease;
+        }
+        .artist-card:hover .artist-photo img{transform:scale(1.035)}
+
+        .artist-photo:after{
+            content:"";position:absolute;inset:auto 0 0;height:42%;
+            background:linear-gradient(180deg,transparent,rgba(31,33,64,.42));
+            pointer-events:none;
+        }
+
+        .artist-role{
+            position:absolute;left:18px;bottom:18px;z-index:3;
+            display:inline-flex;align-items:center;gap:8px;
+            background:#fff;color:var(--purple);font-size:.72rem;font-weight:900;
+            letter-spacing:.08em;text-transform:uppercase;
+            padding:9px 12px;border-radius:11px;
+            box-shadow:0 10px 28px rgba(31,33,64,.18);
+        }
+
+        .artist-body{padding:24px}
+        .artist-body h3{font-size:1.55rem;line-height:1.1}
+        .artist-stage{
+            display:block;color:var(--purple);font-size:.78rem;font-weight:800;
+            margin-top:7px;
+        }
+        .artist-bio{
+            color:var(--muted);font-size:.9rem;line-height:1.7;
+            margin:15px 0 18px;
+        }
+
+        .artist-details{
+            display:grid;gap:10px;padding:15px 0;
+            border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+        }
+        .detail-row{
+            display:flex;align-items:center;gap:10px;font-size:.78rem;color:var(--muted);
+        }
+        .detail-row i{
+            width:28px;text-align:center;color:var(--purple);
+        }
+        .detail-row strong{color:var(--ink);font-weight:800}
+
+        .artist-socials{
+            display:flex;gap:8px;margin-top:17px;
+        }
+        .artist-socials a{
+            width:38px;height:38px;border-radius:11px;border:1px solid var(--line);
+            display:grid;place-items:center;color:var(--ink);background:#fff;
+            transition:.2s;
+        }
+        .artist-socials a:hover{
+            background:var(--soft-purple);color:var(--purple);border-color:#d7d0ff;
+        }
+
+        .loading,.empty-state,.error-state{
+            grid-column:1/-1;
+            min-height:300px;
+            display:grid;place-items:center;text-align:center;
+            border:1px dashed #d8d4e8;border-radius:28px;
+            background:#fcfbff;padding:34px;
+        }
+        .state-icon{
+            width:66px;height:66px;margin:0 auto 15px;border-radius:20px;
+            display:grid;place-items:center;background:var(--soft-purple);color:var(--purple);
+            font-size:1.35rem;
+        }
+        .loading p,.empty-state p,.error-state p{color:var(--muted);margin:8px 0 0;line-height:1.6}
+        .spinner{
+            width:38px;height:38px;border-radius:50%;
+            border:4px solid #e5e1fb;border-top-color:var(--purple);
+            animation:spin .8s linear infinite;margin:auto;
+        }
+        @keyframes spin{to{transform:rotate(360deg)}}
+
+        /* Ministry CTA */
+        .artists-cta{
+            padding:88px 0;
+            background:linear-gradient(135deg,#4934b7,#256fcb 58%,#1aa89c);
+            color:#fff;position:relative;overflow:hidden;
+        }
+        .artists-cta:before{
+            content:"";position:absolute;width:380px;height:380px;border-radius:50%;
+            right:-150px;top:-190px;background:rgba(255,255,255,.08);
+        }
+        .cta-inner{
+            position:relative;z-index:2;
+            display:flex;align-items:center;justify-content:space-between;gap:40px;
+        }
+        .cta-inner h2{font-size:clamp(2.2rem,4vw,4rem);max-width:720px}
+        .cta-inner p{color:#e8eaff;max-width:650px;line-height:1.7}
+        .cta-btn{
+            flex:0 0 auto;min-height:54px;padding:0 22px;border-radius:15px;
+            background:#fff;color:var(--ink);font-weight:900;
+            display:inline-flex;align-items:center;gap:10px;
+        }
+
+        /* Footer */
+        footer{
+            position:relative;overflow:hidden;
+            background:linear-gradient(145deg,#1f2140,#28214f 50%,#17243f);
+            color:#fff;padding:58px 0 26px;
+        }
+        .footer-top{
+            display:grid;grid-template-columns:1.2fr .8fr .8fr;
+            gap:44px;padding-bottom:34px;
+        }
+        .footer-brand p{max-width:470px;color:#b9bad0;line-height:1.7}
+        footer .brand span{color:#b9bad0}
+        .footer-title{
+            font-size:.75rem;letter-spacing:.14em;text-transform:uppercase;
+            font-weight:800;color:#d8d5ff;margin-bottom:14px;
+        }
+        .footer-links{display:grid;gap:10px;font-size:.9rem}
+        .footer-links a{color:#fff;opacity:.85}
+        .footer-links a:hover{opacity:1}
+        .footer-bottom{
+            border-top:1px solid rgba(255,255,255,.12);
+            padding-top:22px;display:flex;justify-content:space-between;
+            gap:20px;color:#b9bad0;font-size:.78rem;
+        }
+        .footer-bottom a{color:#8fdff0;font-weight:800}
+
+        /* WhatsApp float */
+        .wa-float{
+            position:fixed;right:22px;bottom:22px;z-index:180;
+            display:flex;align-items:center;gap:10px;
+        }
+        .wa-label{
+            background:#fff;border:1px solid var(--line);
+            box-shadow:var(--shadow-sm);padding:10px 13px;border-radius:12px;
+            font-size:.76rem;font-weight:900;color:var(--ink);
+            transition:.2s;
+        }
+        .wa-button{
+            width:58px;height:58px;border-radius:18px;
+            display:grid;place-items:center;background:#20b979;color:#fff;
+            box-shadow:0 14px 32px rgba(32,185,121,.32);
+            font-size:1.35rem;transition:.2s;
+        }
+        .wa-float:hover .wa-button{transform:translateY(-3px) scale(1.03)}
+
+        /* Click bubbles */
+        .click-bubble{
+            position:fixed;width:16px;height:16px;border-radius:50%;
+            pointer-events:none;z-index:9999;animation:bubble .7s ease-out forwards;
+        }
+        @keyframes bubble{
+            0%{transform:translate(-50%,-50%) scale(.5);opacity:.8}
+            100%{transform:translate(-50%,-50%) scale(5);opacity:0}
+        }
+
+        .reveal{opacity:0;transform:translateY(24px);transition:.65s ease}
+        .reveal.visible{opacity:1;transform:none}
+
+
+        /* Artist cards remain visible at all times */
+        .artist-card,
+        .artist-card.reveal,
+        .artist-card.reveal.visible{
+            opacity:1 !important;
+            transform:none !important;
+        }
+        .artist-photo img{
+            opacity:1 !important;
+            visibility:visible !important;
+            display:block !important;
+            position:relative;
+            z-index:1;
+        }
+
+        @media(max-width:980px){
+            .nav-links,.header-btn{display:none}
+            .menu-toggle{display:grid;place-items:center}
+            .artist-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+            .cta-inner{display:block}
+            .cta-btn{margin-top:16px}
+            .footer-top{grid-template-columns:1fr 1fr}
+            .footer-brand{grid-column:1/-1}
+        }
+
+        @media(max-width:640px){
+            .container{width:min(calc(100% - 24px),var(--max))}
+            .nav{min-height:74px}
+            .brand img{width:46px;height:46px}
+            .brand span{display:none}
+            .mobile-menu{top:82px;left:12px;right:12px}
+
+            .artists-hero{padding:64px 0 58px}
+            .artists-hero h1{font-size:clamp(2.7rem,13vw,4rem)}
+            .artists-hero p{font-size:.95rem}
+            .hero-stats{display:grid;grid-template-columns:1fr 1fr}
+            .stat-pill:last-child{display:none}
+
+            .artists-section{padding:70px 0 80px}
+            .section-head{display:block;margin-bottom:28px}
+            .section-head p{margin-top:14px}
+            .artist-grid{
+                grid-template-columns:repeat(2,minmax(0,1fr));
+                gap:10px;
+            }
+            .artist-card{
+                border-radius:17px;
+                box-shadow:0 7px 18px rgba(56,48,106,.06);
+            }
+            .artist-card:hover{
+                transform:none;
+            }
+            .artist-photo{
+                aspect-ratio:4/4.25;
+            }
+            .artist-role{
+                left:8px;
+                bottom:8px;
+                gap:5px;
+                font-size:.55rem;
+                letter-spacing:.04em;
+                padding:6px 7px;
+                border-radius:8px;
+                max-width:calc(100% - 16px);
+            }
+            .artist-body{
+                padding:11px;
+            }
+            .artist-body h3{
+                font-size:.98rem;
+                line-height:1.15;
+            }
+            .artist-stage{
+                font-size:.65rem;
+                margin-top:4px;
+            }
+            .artist-bio{
+                font-size:.68rem;
+                line-height:1.45;
+                margin:8px 0 10px;
+                display:-webkit-box;
+                -webkit-line-clamp:3;
+                -webkit-box-orient:vertical;
+                overflow:hidden;
+            }
+            .artist-details{
+                gap:6px;
+                padding:8px 0;
+            }
+            .detail-row{
+                gap:5px;
+                font-size:.62rem;
+                align-items:flex-start;
+            }
+            .detail-row i{
+                width:15px;
+                margin-top:2px;
+            }
+            .artist-socials{
+                gap:5px;
+                margin-top:9px;
+            }
+            .artist-socials a{
+                width:29px;
+                height:29px;
+                border-radius:8px;
+                font-size:.72rem;
+            }
+
+            .artists-cta{padding:68px 0}
+            .footer-top{grid-template-columns:1fr}
+            .footer-brand{grid-column:auto}
+            .footer-bottom{display:block;line-height:1.8}
+
+            .wa-float{right:14px;bottom:14px}
+            .wa-label{display:none}
+            .wa-button{width:56px;height:56px;border-radius:17px}
+        }
+
+        @media(max-width:400px){
+            .container{width:min(calc(100% - 16px),var(--max))}
+            .artist-grid{gap:8px}
+            .artist-body{padding:9px}
+            .artist-body h3{font-size:.9rem}
+            .artist-bio{font-size:.64rem;-webkit-line-clamp:2}
+            .detail-row{font-size:.58rem}
+            .artist-role{font-size:.5rem;padding:5px 6px}
+        }
+    </style>
+</head>
+
+<body>
+    <header class="site-header">
+        <div class="container nav">
+            <a class="brand" href="index.html">
+                <img src="logo.png" alt="Echoes of Mercy logo">
+                <div>
+                    <strong>Echoes of Mercy</strong>
+                    <span>Gospel Group</span>
+                </div>
+            </a>
+
+            <nav class="nav-links" aria-label="Main navigation">
+                <a href="index.html">Home</a>
+                <a href="index.html#music">Music</a>
+                <a href="artists.html" class="active">Our Artists</a>
+                <a href="index.html#about">Our Story</a>
+                <a href="index.html#contact">Bookings</a>
+            </nav>
+
+            <a href="index.html#contact" class="header-btn">
+                <i class="fa-solid fa-calendar-check"></i>
+                Invite the Group
+            </a>
+
+            <button class="menu-toggle" id="menuToggle" aria-label="Open menu" aria-expanded="false">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+
+        <div class="mobile-menu" id="mobileMenu">
+            <a href="index.html">Home</a>
+            <a href="index.html#music">Music</a>
+            <a href="artists.html">Our Artists</a>
+            <a href="index.html#about">Our Story</a>
+            <a href="index.html#contact">Bookings</a>
+        </div>
+    </header>
+
+    <main>
+        <section class="artists-hero">
+            <div class="container">
+                <div class="hero-content reveal">
+                    <span class="eyebrow">Meet the ministry</span>
+                    <h1>The voices behind <span>Echoes of Mercy.</span></h1>
+                    <p>
+                        Meet the gifted singers, musicians and ministry team who serve through every harmony,
+                        every message and every moment of worship. Each artist brings a unique gift, but together
+                        they carry one purpose: sharing the Gospel of Jesus Christ through music.
+                    </p>
+
+                    <div class="hero-stats">
+                        <div class="stat-pill">
+                            <i class="fa-solid fa-microphone-lines"></i>
+                            <div><b id="artistCount">Our Artists</b><small>Voices & musicians</small></div>
+                        </div>
+                        <div class="stat-pill">
+                            <i class="fa-solid fa-church"></i>
+                            <div><b>Gospel Ministry</b><small>Faith at the centre</small></div>
+                        </div>
+                        <div class="stat-pill">
+                            <i class="fa-solid fa-location-dot"></i>
+                            <div><b>Tonga, Mpumalanga</b><small>South Africa</small></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="artists-section">
+            <div class="container">
+                <div class="section-head reveal">
+                    <div>
+                        <span class="eyebrow">Our Artists</span>
+                        <h2>Different gifts.<br>One ministry.</h2>
+                    </div>
+                    <p>
+                        Meet the voices and musicians who serve together as Echoes of Mercy.
+                        All invitations and bookings are handled through the group, not individual members.
+                    </p>
+                </div>
+
+                <div class="artist-grid" id="artistGrid">
+                    <div class="loading">
+                        <div>
+                            <div class="spinner"></div>
+                            <p>Loading the Echoes of Mercy artist line-up...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="artists-cta">
+            <div class="container cta-inner reveal">
+                <div>
+                    <span class="eyebrow" style="color:#fff">Group Bookings</span>
+                    <h2>Want the full Echoes of Mercy ministry at your event?</h2>
+                    <p>
+                        For church services, conferences, Gospel events, celebrations and ministry invitations,
+                        contact the group directly for availability and booking information.
+                    </p>
+                </div>
+                <a href="index.html#contact" class="cta-btn">
+                    <i class="fa-solid fa-calendar-days"></i>
+                    Group Booking Enquiry
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-top">
+                <div class="footer-brand">
+                    <a href="index.html" class="brand">
+                        <img src="logo.png" alt="Echoes of Mercy logo">
+                        <div><strong>Echoes of Mercy</strong><span>Gospel Group</span></div>
+                    </a>
+                    <p>Spreading the Gospel of Jesus Christ through uplifting music, hope, joy and worship.</p>
+                </div>
+
+                <div>
+                    <div class="footer-title">Navigate</div>
+                    <div class="footer-links">
+                        <a href="index.html">Home</a>
+                        <a href="index.html#music">Music</a>
+                        <a href="artists.html">Our Artists</a>
+                        <a href="index.html#about">Our Story</a>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="footer-title">Connect</div>
+                    <div class="footer-links">
+                        <a href="tel:+27820878978">Call 082 087 8978</a>
+                        <a href="mailto:ngomanesipho46@gmail.com">Email the Group</a>
+                        <a href="https://wa.me/27820878978" target="_blank" rel="noopener">WhatsApp</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <span>© <span id="year"></span> Echoes of Mercy Gospel Group. All rights reserved.</span>
+                <span>Website by <a href="https://cmtech.tech" target="_blank" rel="noopener">cmtech.tech</a></span>
+            </div>
+        </div>
+    </footer>
+
+    <a class="wa-float"
+       href="https://wa.me/27820878978?text=Hello%20Echoes%20of%20Mercy%20Gospel%20Group%2C%20I%20would%20like%20to%20make%20a%20booking%20enquiry."
+       target="_blank"
+       rel="noopener"
+       aria-label="WhatsApp Echoes of Mercy">
+        <span class="wa-label">WhatsApp the Group</span>
+        <span class="wa-button"><i class="fa-brands fa-whatsapp"></i></span>
+    </a>
+
+    <script>
+        const SUPABASE_URL = 'https://yppzepffoyhcujddaczj.supabase.co';
+        const SUPABASE_KEY = 'sb_publishable_NiPwmeMuNV2mdy6TZ4n5yg_ulciLV9J';
+        const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        const grid = document.getElementById('artistGrid');
+        const artistCount = document.getElementById('artistCount');
+
+        const esc = value => String(value ?? '').replace(/[&<>'"]/g, c => ({
+            '&':'&amp;',
+            '<':'&lt;',
+            '>':'&gt;',
+            "'":'&#39;',
+            '"':'&quot;'
+        }[c]));
+
+        function safeUrl(value) {
+            if (!value) return '';
+            try {
+                const url = new URL(value, location.origin);
+                return ['http:', 'https:'].includes(url.protocol) ? url.href : '';
+            } catch (_) {
+                return '';
+            }
+        }
+
+        function initials(name='Artist') {
+            return name
+                .split(/\s+/)
+                .filter(Boolean)
+                .slice(0,2)
+                .map(p => p[0]?.toUpperCase() || '')
+                .join('');
+        }
+
+        function socialLink(icon, url, label) {
+            const safe = safeUrl(url);
+            if (!safe) return '';
+            return `<a href="${esc(safe)}" target="_blank" rel="noopener" aria-label="${esc(label)}"><i class="${icon}"></i></a>`;
+        }
+
+        function renderArtists(artists) {
+            artistCount.textContent = `${artists.length} Artist${artists.length === 1 ? '' : 's'}`;
+
+            if (!artists.length) {
+                grid.innerHTML = `
+                    <div class="empty-state">
+                        <div>
+                            <div class="state-icon"><i class="fa-solid fa-users"></i></div>
+                            <h3>Artist profiles coming soon</h3>
+                            <p>The admin has not published any artist profiles yet.</p>
+                        </div>
+                    </div>`;
+                return;
+            }
+
+            grid.innerHTML = artists.map(artist => {
+                const photo = safeUrl(artist.photo_url);
+
+                const photoMarkup = photo
+                    ? `<img src="${esc(photo)}" alt="${esc(artist.name)}" loading="eager"
+                         onerror="this.closest('.artist-photo').classList.add('photo-failed');this.remove()">`
+                    : '';
+
+                const fallback = `
+                    <div style="position:absolute;inset:0;display:grid;place-items:center;
+                    background:linear-gradient(145deg,#f0edff,#edf6ff);color:#6c4cf1;
+                    font:800 3.5rem Manrope;z-index:0">${esc(initials(artist.name))}</div>`;
+
+                const socialMarkup = [
+                    socialLink('fa-brands fa-instagram', artist.instagram_url, `${artist.name} on Instagram`),
+                    socialLink('fa-brands fa-facebook-f', artist.facebook_url, `${artist.name} on Facebook`),
+                    socialLink('fa-brands fa-tiktok', artist.tiktok_url, `${artist.name} on TikTok`),
+                    socialLink('fa-brands fa-youtube', artist.youtube_url, `${artist.name} on YouTube`)
+                ].filter(Boolean).join('');
+
+                return `
+                    <article class="artist-card">
+                        <div class="artist-photo">
+                            ${fallback}
+                            ${photoMarkup}
+                            <span class="artist-role">
+                                <i class="fa-solid fa-microphone-lines"></i>
+                                ${esc(artist.duty || 'Artist')}
+                            </span>
+                        </div>
+
+                        <div class="artist-body">
+                            <h3>${esc(artist.name || 'Echoes of Mercy Artist')}</h3>
+                            ${artist.stage_name ? `<span class="artist-stage">${esc(artist.stage_name)}</span>` : ''}
+
+                            <p class="artist-bio">
+                                ${esc(artist.bio || 'A member of Echoes of Mercy Gospel Group serving through music and ministry.')}
+                            </p>
+
+                            <div class="artist-details">
+                                <div class="detail-row">
+                                    <i class="fa-solid fa-music"></i>
+                                    <span><strong>Duty:</strong> ${esc(artist.duty || 'Artist')}</span>
+                                </div>
+                                ${artist.location ? `
+                                    <div class="detail-row">
+                                        <i class="fa-solid fa-location-dot"></i>
+                                        <span><strong>Based in:</strong> ${esc(artist.location)}</span>
+                                    </div>` : ''}
+                                ${artist.experience ? `
+                                    <div class="detail-row">
+                                        <i class="fa-solid fa-star"></i>
+                                        <span><strong>Experience:</strong> ${esc(artist.experience)}</span>
+                                    </div>` : ''}
+                            </div>
+
+                            ${socialMarkup ? `<div class="artist-socials">${socialMarkup}</div>` : ''}
+                        </div>
+                    </article>`;
+            }).join('');
+
+        }
+
+        async function loadArtists() {
+            const { data, error } = await db
+                .from('artists')
+                .select('id,name,stage_name,duty,bio,photo_url,email,location,experience,instagram_url,facebook_url,tiktok_url,youtube_url,display_order')
+                .eq('is_published', true)
+                .order('display_order', { ascending: true })
+                .order('created_at', { ascending: true });
+
+            if (error) {
+                console.error('Could not load artists:', error);
+                grid.innerHTML = `
+                    <div class="error-state">
+                        <div>
+                            <div class="state-icon"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                            <h3>Artist profiles are not available yet</h3>
+                            <p>Once the artists table is set up and profiles are published by the admin, they will appear here automatically.</p>
+                        </div>
+                    </div>`;
+                return;
+            }
+
+            renderArtists(data || []);
+        }
+
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add('visible');
+            });
+        }, { threshold:.12 });
+
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        const menuToggle = document.getElementById('menuToggle');
+        const mobileMenu = document.getElementById('mobileMenu');
+
+        menuToggle.addEventListener('click', () => {
+            const open = mobileMenu.classList.toggle('show');
+            menuToggle.setAttribute('aria-expanded', String(open));
+            menuToggle.innerHTML = open
+                ? '<i class="fa-solid fa-xmark"></i>'
+                : '<i class="fa-solid fa-bars"></i>';
+        });
+
+        document.addEventListener('click', e => {
+            if (!mobileMenu.contains(e.target) && !menuToggle.contains(e.target)) {
+                mobileMenu.classList.remove('show');
+                menuToggle.setAttribute('aria-expanded','false');
+                menuToggle.innerHTML = '<i class="fa-solid fa-bars"></i>';
+            }
+
+            const bubble = document.createElement('span');
+            const colors = ['#6c4cf1','#ff6f7f','#21b8c4','#2f8cff','#ffd45c','#22b983'];
+            bubble.className = 'click-bubble';
+            bubble.style.left = e.clientX + 'px';
+            bubble.style.top = e.clientY + 'px';
+            bubble.style.background = colors[Math.floor(Math.random()*colors.length)];
+            document.body.appendChild(bubble);
+            setTimeout(() => bubble.remove(),700);
+        });
+
+        document.getElementById('year').textContent = new Date().getFullYear();
+        loadArtists();
+    </script>
+</body>
+</html>

@@ -1,0 +1,2117 @@
+<!doctype html>
+<html lang="en-ZA">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="theme-color" content="#5d47ee">
+    <title>Echoes of Mercy Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        :root {
+            --ink: #1d2140;
+            --muted: #73758b;
+            --bg: #f7f7fc;
+            --white: #fff;
+            --line: #e6e7f1;
+            --purple: #654cf0;
+            --blue: #2f8cff;
+            --coral: #ff7182;
+            --green: #1fb884;
+            --red: #e4455e;
+            --gold: #e5a90c;
+            --shadow: 0 18px 50px rgba(55, 48, 104, .10)
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        body {
+            margin: 0;
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg);
+            color: var(--ink)
+        }
+
+        button,
+        input,
+        textarea,
+        select {
+            font: inherit
+        }
+
+        button {
+            cursor: pointer
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit
+        }
+
+        .hidden {
+            display: none !important
+        }
+
+        .login-wrap {
+            min-height: 100vh;
+            display: grid;
+            place-items: center;
+            padding: 24px;
+            background: radial-gradient(circle at 15% 10%, #efeaff, transparent 28%), radial-gradient(circle at 86% 22%, #e8f6ff, transparent 26%), #f8f8fc
+        }
+
+        .login-card {
+            width: min(440px, 100%);
+            background: #fff;
+            border: 1px solid var(--line);
+            border-radius: 28px;
+            padding: 34px;
+            box-shadow: var(--shadow)
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 28px
+        }
+
+        .brand img {
+            width: 58px;
+            height: 58px;
+            object-fit: contain;
+            border: 1px solid var(--line);
+            border-radius: 16px;
+            padding: 4px
+        }
+
+        .brand strong {
+            font: 800 1.05rem Manrope
+        }
+
+        .brand span {
+            display: block;
+            color: var(--muted);
+            font-size: .78rem
+        }
+
+        .login-card h1 {
+            font: 800 2rem Manrope;
+            margin: 0 0 8px
+        }
+
+        .login-card p {
+            color: var(--muted);
+            line-height: 1.6
+        }
+
+        .field {
+            display: grid;
+            gap: 7px;
+            margin: 15px 0
+        }
+
+        .field label {
+            font-size: .79rem;
+            font-weight: 800
+        }
+
+        .field input,
+        .field textarea,
+        .field select {
+            width: 100%;
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            padding: 13px 14px;
+            background: #fff;
+            outline: none;
+            transition: .2s
+        }
+
+        .field textarea {
+            min-height: 105px;
+            resize: vertical
+        }
+
+        .field input:focus,
+        .field textarea:focus,
+        .field select:focus {
+            border-color: #b7acf9;
+            box-shadow: 0 0 0 4px #f0edff
+        }
+
+        .btn {
+            border: 0;
+            border-radius: 14px;
+            min-height: 46px;
+            padding: 0 17px;
+            font-weight: 800;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 9px
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--purple), var(--blue));
+            color: #fff
+        }
+
+        .btn-light {
+            background: #fff;
+            border: 1px solid var(--line)
+        }
+
+        .btn-danger {
+            background: #fff0f2;
+            color: var(--red);
+            border: 1px solid #ffd5db
+        }
+
+        .btn-green {
+            background: #e8f9f3;
+            color: #0f8d62;
+            border: 1px solid #c5f0e0
+        }
+
+        .login-card .btn {
+            width: 100%;
+            margin-top: 7px
+        }
+
+        .message {
+            margin-top: 15px;
+            padding: 12px 14px;
+            border-radius: 12px;
+            font-size: .82rem;
+            display: none
+        }
+
+        .message.show {
+            display: block
+        }
+
+        .message.error {
+            background: #fff0f2;
+            color: #b72d45
+        }
+
+        .message.ok {
+            background: #eafaf4;
+            color: #117b58
+        }
+
+        .app {
+            min-height: 100vh
+        }
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 270px;
+            background: #1f2140;
+            color: #fff;
+            padding: 24px 18px;
+            z-index: 50
+        }
+
+        .sidebar .brand {
+            margin: 0 8px 34px
+        }
+
+        .sidebar .brand img {
+            background: #fff
+        }
+
+        .sidebar .brand span {
+            color: #bfc1d8
+        }
+
+        .nav-btn {
+            width: 100%;
+            border: 0;
+            background: transparent;
+            color: #cfd0df;
+            padding: 13px 14px;
+            border-radius: 13px;
+            display: flex;
+            gap: 11px;
+            align-items: center;
+            font-weight: 800;
+            text-align: left;
+            margin: 4px 0
+        }
+
+        .nav-btn.active,
+        .nav-btn:hover {
+            background: #30335e;
+            color: #fff
+        }
+
+        .nav-btn i {
+            width: 20px
+        }
+
+        .sidebar-bottom {
+            position: absolute;
+            left: 18px;
+            right: 18px;
+            bottom: 22px
+        }
+
+        .public-link {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            color: #cfd0df;
+            font-size: .83rem;
+            padding: 10px
+        }
+
+        .main {
+            margin-left: 270px;
+            min-height: 100vh
+        }
+
+        .topbar {
+            height: 82px;
+            background: #fff;
+            border-bottom: 1px solid var(--line);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 30px;
+            position: sticky;
+            top: 0;
+            z-index: 30
+        }
+
+        .topbar h2 {
+            font: 800 1.18rem Manrope;
+            margin: 0
+        }
+
+        .userbox {
+            display: flex;
+            gap: 10px;
+            align-items: center
+        }
+
+        .userdot {
+            width: 38px;
+            height: 38px;
+            border-radius: 12px;
+            background: #efecff;
+            color: var(--purple);
+            display: grid;
+            place-items: center
+        }
+
+        .content {
+            padding: 30px;
+            max-width: 1450px
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-bottom: 24px
+        }
+
+        .stat {
+            background: #fff;
+            border: 1px solid var(--line);
+            border-radius: 19px;
+            padding: 20px;
+            box-shadow: 0 8px 22px rgba(55, 48, 104, .05)
+        }
+
+        .stat i {
+            width: 42px;
+            height: 42px;
+            border-radius: 13px;
+            display: grid;
+            place-items: center;
+            background: #efecff;
+            color: var(--purple);
+            margin-bottom: 15px
+        }
+
+        .stat b {
+            font: 800 1.8rem Manrope;
+            display: block
+        }
+
+        .stat span {
+            font-size: .8rem;
+            color: var(--muted)
+        }
+
+        .panel {
+            background: #fff;
+            border: 1px solid var(--line);
+            border-radius: 22px;
+            box-shadow: 0 10px 30px rgba(55, 48, 104, .05);
+            overflow: hidden;
+            margin-bottom: 22px
+        }
+
+        .panel-head {
+            padding: 19px 21px;
+            border-bottom: 1px solid var(--line);
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            align-items: center
+        }
+
+        .panel-head h3 {
+            font: 800 1.08rem Manrope;
+            margin: 0
+        }
+
+        .panel-head p {
+            margin: 4px 0 0;
+            color: var(--muted);
+            font-size: .8rem
+        }
+
+        .panel-body {
+            padding: 21px
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px
+        }
+
+        .form-grid .field {
+            margin: 0
+        }
+
+        .full {
+            grid-column: 1/-1
+        }
+
+        .actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap
+        }
+
+        .song-list {
+            display: grid;
+            gap: 10px
+        }
+
+        .song-row {
+            display: grid;
+            grid-template-columns: 72px 1fr auto;
+            gap: 14px;
+            align-items: center;
+            border: 1px solid var(--line);
+            border-radius: 16px;
+            padding: 10px
+        }
+
+        .song-row img {
+            width: 72px;
+            height: 58px;
+            object-fit: cover;
+            border-radius: 11px
+        }
+
+        .song-row h4 {
+            margin: 0 0 4px;
+            font: 800 .94rem Manrope
+        }
+
+        .song-row p {
+            margin: 0;
+            color: var(--muted);
+            font-size: .75rem
+        }
+
+        .row-actions {
+            display: flex;
+            gap: 7px
+        }
+
+        .icon-btn {
+            width: 38px;
+            height: 38px;
+            border-radius: 11px;
+            border: 1px solid var(--line);
+            background: #fff
+        }
+
+        .update-preview {
+            border-radius: 18px;
+            overflow: hidden;
+            border: 1px solid var(--line);
+            background: #fafaff
+        }
+
+        .update-preview img {
+            width: 100%;
+            max-height: 350px;
+            object-fit: contain;
+            background: #20223f
+        }
+
+        .update-preview .copy {
+            padding: 16px
+        }
+
+        .update-preview h4 {
+            margin: 0 0 6px;
+            font: 800 1rem Manrope
+        }
+
+        .update-preview p {
+            margin: 0;
+            color: var(--muted);
+            font-size: .82rem
+        }
+
+        .pill {
+            display: inline-flex;
+            padding: 6px 9px;
+            border-radius: 999px;
+            background: #fff5d8;
+            color: #9a6b00;
+            font-size: .69rem;
+            font-weight: 800;
+            margin-bottom: 8px
+        }
+
+        .mobile-nav {
+            display: none
+        }
+
+        .toast {
+            position: fixed;
+            right: 22px;
+            bottom: 22px;
+            background: #1f2140;
+            color: #fff;
+            padding: 13px 16px;
+            border-radius: 13px;
+            box-shadow: var(--shadow);
+            z-index: 200;
+            opacity: 0;
+            transform: translateY(10px);
+            pointer-events: none;
+            transition: .2s
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: none
+        }
+
+        .empty {
+            padding: 24px;
+            text-align: center;
+            color: var(--muted);
+            font-size: .85rem
+        }
+
+        .checkline {
+            display: flex;
+            gap: 9px;
+            align-items: center;
+            font-size: .82rem;
+            font-weight: 700
+        }
+
+        .checkline input {
+            width: 18px;
+            height: 18px
+        }
+
+        @media(max-width:900px) {
+            .sidebar {
+                display: none
+            }
+
+            .main {
+                margin-left: 0
+            }
+
+            .mobile-nav {
+                display: flex;
+                position: fixed;
+                left: 12px;
+                right: 12px;
+                bottom: 12px;
+                background: #1f2140;
+                border-radius: 18px;
+                padding: 7px;
+                z-index: 90;
+                box-shadow: 0 16px 40px rgba(31, 33, 64, .28)
+            }
+
+            .mobile-nav button {
+                flex: 1;
+                border: 0;
+                background: transparent;
+                color: #bec0d4;
+                padding: 10px 6px;
+                border-radius: 12px;
+                font-size: .69rem;
+                font-weight: 800
+            }
+
+            .mobile-nav button i {
+                display: block;
+                font-size: 1rem;
+                margin-bottom: 4px
+            }
+
+            .mobile-nav button.active {
+                background: #343764;
+                color: #fff
+            }
+
+            .content {
+                padding: 20px 14px 100px
+            }
+
+            .topbar {
+                padding: 0 15px;
+                height: 72px
+            }
+
+            .stats {
+                grid-template-columns: 1fr 1fr
+            }
+
+            .stats .stat:last-child {
+                grid-column: 1/-1
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr
+            }
+
+            .full {
+                grid-column: auto
+            }
+
+            .song-row {
+                grid-template-columns: 58px 1fr
+            }
+
+            .song-row img {
+                width: 58px;
+                height: 52px
+            }
+
+            .row-actions {
+                grid-column: 1/-1;
+                justify-content: flex-end
+            }
+        }
+
+        /* ===== PROFESSIONAL ADMIN V2 ===== */
+        :root {
+            --navy: #191b39;
+            --navy2: #252952;
+            --lav: #f1efff;
+            --cyan: #eaf8ff;
+            --peach: #fff1ec;
+            --success: #e9fbf4
+        }
+
+        body {
+            background: linear-gradient(180deg, #f8f8fd 0, #f4f6fb 100%)
+        }
+
+        .sidebar {
+            background: linear-gradient(180deg, #1b1d3b 0%, #23264d 100%);
+            border-right: 1px solid rgba(255, 255, 255, .07)
+        }
+
+        .sidebar:before {
+            content: "";
+            position: absolute;
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            background: rgba(101, 76, 240, .22);
+            filter: blur(10px);
+            top: -80px;
+            right: -75px;
+            pointer-events: none
+        }
+
+        .nav-btn {
+            position: relative;
+            transition: .22s ease
+        }
+
+        .nav-btn.active:before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 11px;
+            bottom: 11px;
+            width: 3px;
+            border-radius: 999px;
+            background: #a995ff
+        }
+
+        .nav-btn.active,
+        .nav-btn:hover {
+            background: linear-gradient(90deg, rgba(101, 76, 240, .26), rgba(47, 140, 255, .10));
+            color: #fff
+        }
+
+        .topbar {
+            box-shadow: 0 8px 24px rgba(33, 35, 76, .04)
+        }
+
+        .content {
+            padding-top: 24px
+        }
+
+        .page-intro {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 18px;
+            margin-bottom: 22px
+        }
+
+        .page-intro h1 {
+            font: 800 clamp(1.7rem, 3vw, 2.35rem) Manrope;
+            margin: 0 0 6px;
+            letter-spacing: -.045em
+        }
+
+        .page-intro p {
+            margin: 0;
+            color: var(--muted);
+            max-width: 690px;
+            line-height: 1.6
+        }
+
+        .live-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #e9fbf4;
+            color: #0a855e;
+            border: 1px solid #c9f1e2;
+            border-radius: 999px;
+            padding: 9px 12px;
+            font-size: .72rem;
+            font-weight: 900;
+            white-space: nowrap
+        }
+
+        .live-chip:before {
+            content: "";
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #1fb884;
+            box-shadow: 0 0 0 5px rgba(31, 184, 132, .12)
+        }
+
+        .stats {
+            grid-template-columns: repeat(4, 1fr)
+        }
+
+        .stat {
+            position: relative;
+            overflow: hidden
+        }
+
+        .stat:after {
+            content: "";
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            right: -34px;
+            top: -35px;
+            background: #f2efff
+        }
+
+        .stat:nth-child(2):after {
+            background: #eaf8ff
+        }
+
+        .stat:nth-child(3):after {
+            background: #fff1ec
+        }
+
+        .stat:nth-child(4):after {
+            background: #e9fbf4
+        }
+
+        .stat:nth-child(2) i {
+            background: #eaf8ff;
+            color: #217bd3
+        }
+
+        .stat:nth-child(3) i {
+            background: #fff1ec;
+            color: #d76a43
+        }
+
+        .stat:nth-child(4) i {
+            background: #e9fbf4;
+            color: #12865f
+        }
+
+        .panel {
+            border-radius: 24px
+        }
+
+        .panel-head {
+            padding: 21px 23px
+        }
+
+        .panel-body {
+            padding: 23px
+        }
+
+        .section-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 14px;
+            display: grid;
+            place-items: center;
+            background: #efecff;
+            color: var(--purple);
+            flex: 0 0 auto
+        }
+
+        .panel-head-left {
+            display: flex;
+            align-items: center;
+            gap: 12px
+        }
+
+        .panel-head h3 {
+            font-size: 1.05rem
+        }
+
+        .panel-head p {
+            font-size: .78rem
+        }
+
+        .update-layout {
+            display: grid;
+            grid-template-columns: minmax(0, 1.25fr) minmax(320px, .75fr);
+            gap: 20px;
+            align-items: start
+        }
+
+        .sticky-card {
+            position: sticky;
+            top: 104px
+        }
+
+        .type-selector {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 18px
+        }
+
+        .type-choice {
+            border: 1px solid var(--line);
+            background: #fff;
+            border-radius: 16px;
+            padding: 14px 12px;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            text-align: left;
+            transition: .2s
+        }
+
+        .type-choice:hover {
+            border-color: #c9c1ff;
+            transform: translateY(-1px)
+        }
+
+        .type-choice.active {
+            border-color: #9e8eff;
+            background: #f5f3ff;
+            box-shadow: 0 0 0 3px #efecff
+        }
+
+        .type-choice i {
+            width: 34px;
+            height: 34px;
+            border-radius: 10px;
+            display: grid;
+            place-items: center;
+            background: #f2efff;
+            color: var(--purple)
+        }
+
+        .type-choice b {
+            display: block;
+            font-size: .82rem
+        }
+
+        .type-choice span {
+            font-size: .68rem;
+            color: var(--muted)
+        }
+
+        .upload-zone {
+            border: 1.5px dashed #cfd2e5;
+            border-radius: 18px;
+            padding: 18px;
+            background: #fbfbfe;
+            text-align: center;
+            transition: .2s;
+            position: relative
+        }
+
+        .upload-zone.drag {
+            border-color: #8c79ff;
+            background: #f4f1ff
+        }
+
+        .upload-zone input {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            cursor: pointer
+        }
+
+        .upload-zone .upload-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 15px;
+            background: #efecff;
+            color: var(--purple);
+            display: grid;
+            place-items: center;
+            margin: 0 auto 10px
+        }
+
+        .upload-zone b {
+            font-size: .85rem;
+            display: block
+        }
+
+        .upload-zone span {
+            font-size: .72rem;
+            color: var(--muted)
+        }
+
+        .poster-preview {
+            display: none;
+            margin-top: 13px;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid var(--line);
+            background: #1f2140
+        }
+
+        .poster-preview.show {
+            display: block
+        }
+
+        .poster-preview img {
+            width: 100%;
+            max-height: 360px;
+            object-fit: contain;
+            display: block
+        }
+
+        .poster-preview .poster-meta {
+            background: #fff;
+            padding: 10px 12px;
+            font-size: .72rem;
+            color: var(--muted);
+            display: flex;
+            justify-content: space-between;
+            gap: 10px
+        }
+
+        .remove-poster {
+            border: 0;
+            background: none;
+            color: var(--red);
+            font-weight: 800;
+            padding: 0
+        }
+
+        .helper {
+            font-size: .68rem;
+            color: var(--muted);
+            line-height: 1.5;
+            margin-top: 4px
+        }
+
+        .field label {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px
+        }
+
+        .optional {
+            font-size: .64rem;
+            color: #9a9caf;
+            font-weight: 700
+        }
+
+        .field input,
+        .field textarea,
+        .field select {
+            border-radius: 13px;
+            padding: 12px 13px
+        }
+
+        .field input:hover,
+        .field textarea:hover,
+        .field select:hover {
+            border-color: #d6d1ef
+        }
+
+        .preview-placeholder {
+            min-height: 260px;
+            display: grid;
+            place-items: center;
+            text-align: center;
+            padding: 30px;
+            background: linear-gradient(145deg, #23264b, #171936);
+            color: #fff
+        }
+
+        .preview-placeholder i {
+            font-size: 2.5rem;
+            opacity: .7;
+            margin-bottom: 12px
+        }
+
+        .preview-placeholder b {
+            display: block;
+            font: 800 1rem Manrope
+        }
+
+        .preview-placeholder span {
+            font-size: .75rem;
+            color: #c7cae4
+        }
+
+        .update-preview img {
+            max-height: 430px
+        }
+
+        .update-preview .copy {
+            padding: 18px
+        }
+
+        .update-preview h4 {
+            font-size: 1.08rem
+        }
+
+        .preview-actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 14px
+        }
+
+        .mini-btn {
+            border: 1px solid var(--line);
+            background: #fff;
+            border-radius: 10px;
+            padding: 8px 10px;
+            font-size: .72rem;
+            font-weight: 800
+        }
+
+        .mini-btn.danger {
+            color: var(--red);
+            background: #fff3f5;
+            border-color: #ffd7df
+        }
+
+        .history-list {
+            display: grid;
+            gap: 10px
+        }
+
+        .history-item {
+            border: 1px solid var(--line);
+            border-radius: 15px;
+            padding: 12px 13px;
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            gap: 11px;
+            align-items: center
+        }
+
+        .history-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 12px;
+            display: grid;
+            place-items: center;
+            background: #f3f1ff;
+            color: var(--purple)
+        }
+
+        .history-item h5 {
+            margin: 0 0 2px;
+            font: 800 .82rem Manrope
+        }
+
+        .history-item p {
+            margin: 0;
+            color: var(--muted);
+            font-size: .68rem
+        }
+
+        .history-status {
+            font-size: .65rem;
+            font-weight: 900;
+            padding: 6px 8px;
+            border-radius: 999px;
+            background: #f1f1f6;
+            color: #77798c
+        }
+
+        .history-status.live {
+            background: #e9fbf4;
+            color: #0d855e
+        }
+
+        .btn {
+            transition: .2s
+        }
+
+        .btn:hover {
+            transform: translateY(-1px)
+        }
+
+        .btn-primary {
+            box-shadow: 0 10px 22px rgba(101, 76, 240, .20)
+        }
+
+        @media(max-width:1100px) {
+            .stats {
+                grid-template-columns: repeat(2, 1fr)
+            }
+
+            .update-layout {
+                grid-template-columns: 1fr
+            }
+
+            .sticky-card {
+                position: static
+            }
+        }
+
+        @media(max-width:900px) {
+            .page-intro {
+                align-items: flex-start;
+                flex-direction: column
+            }
+
+            .stats {
+                grid-template-columns: 1fr 1fr
+            }
+
+            .stats .stat:last-child {
+                grid-column: auto
+            }
+
+            .type-selector {
+                grid-template-columns: 1fr
+            }
+
+            .type-choice {
+                padding: 12px
+            }
+
+            .topbar .userbox>div:last-child {
+                display: none
+            }
+        }
+
+        @media(max-width:520px) {
+            .stats {
+                grid-template-columns: 1fr 1fr;
+                gap: 10px
+            }
+
+            .stat {
+                padding: 15px
+            }
+
+            .stat b {
+                font-size: 1.45rem
+            }
+
+            .stat i {
+                width: 36px;
+                height: 36px;
+                margin-bottom: 11px
+            }
+
+            .panel-head,
+            .panel-body {
+                padding-left: 16px;
+                padding-right: 16px
+            }
+
+            .page-intro h1 {
+                font-size: 1.65rem
+            }
+
+            .actions .btn {
+                width: 100%
+            }
+
+            .history-item {
+                grid-template-columns: auto 1fr
+            }
+
+            .history-item>div:last-child {
+                grid-column: 1/-1
+            }
+        }
+
+        /* ===== ARTIST MANAGER ===== */
+        .artist-manager-grid {
+            display: grid;
+            grid-template-columns: minmax(360px, .9fr) minmax(0, 1.25fr);
+            gap: 20px;
+            align-items: start
+        }
+
+        .artist-photo-zone {
+            display: grid;
+            grid-template-columns: 150px 1fr;
+            gap: 16px;
+            align-items: center;
+            border: 1.5px dashed #cfd2e5;
+            border-radius: 18px;
+            padding: 16px;
+            background: #fbfbfe
+        }
+
+        .artist-photo-preview {
+            width: 150px;
+            height: 175px;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid var(--line);
+            background: linear-gradient(145deg, #efecff, #eaf8ff);
+            display: grid;
+            place-items: center;
+            color: var(--purple);
+            font-size: 2rem
+        }
+
+        .artist-photo-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center top
+        }
+
+        .artist-upload-actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 10px
+        }
+
+        .artist-upload-label {
+            position: relative;
+            overflow: hidden
+        }
+
+        .artist-upload-label input {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            cursor: pointer
+        }
+
+        .artist-toolbar {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap
+        }
+
+        .artist-search {
+            min-width: 220px;
+            flex: 1;
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            padding: 10px 12px;
+            outline: none
+        }
+
+        .artist-list {
+            display: grid;
+            gap: 10px
+        }
+
+        .artist-row {
+            display: grid;
+            grid-template-columns: 64px minmax(160px, 1fr) minmax(100px, .65fr) 100px auto;
+            gap: 12px;
+            align-items: center;
+            border: 1px solid var(--line);
+            border-radius: 16px;
+            padding: 10px;
+            transition: .2s
+        }
+
+        .artist-row:hover {
+            border-color: #d5cff7;
+            box-shadow: 0 7px 18px rgba(55, 48, 104, .06)
+        }
+
+        .artist-thumb {
+            width: 64px;
+            height: 70px;
+            border-radius: 13px;
+            overflow: hidden;
+            background: #efecff;
+            color: var(--purple);
+            display: grid;
+            place-items: center;
+            font-weight: 900
+        }
+
+        .artist-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center top
+        }
+
+        .artist-row h4 {
+            margin: 0 0 4px;
+            font: 800 .91rem Manrope
+        }
+
+        .artist-row p {
+            margin: 0;
+            color: var(--muted);
+            font-size: .72rem;
+            line-height: 1.45
+        }
+
+        .artist-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 8px;
+            border-radius: 999px;
+            font-size: .66rem;
+            font-weight: 900;
+            width: max-content
+        }
+
+        .artist-status.live {
+            background: #e9fbf4;
+            color: #0d855e
+        }
+
+        .artist-status.hidden-state {
+            background: #f1f1f6;
+            color: #77798c
+        }
+
+        .artist-order-actions {
+            display: flex;
+            gap: 5px
+        }
+
+        .artist-hint {
+            font-size: .7rem;
+            color: var(--muted);
+            line-height: 1.5;
+            margin-top: 7px
+        }
+
+        .artist-counter-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 15px
+        }
+
+        .artist-counter {
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            padding: 12px;
+            background: #fbfbfe
+        }
+
+        .artist-counter b {
+            display: block;
+            font: 800 1.25rem Manrope
+        }
+
+        .artist-counter span {
+            color: var(--muted);
+            font-size: .7rem
+        }
+
+        @media(max-width:1150px) {
+            .artist-manager-grid {
+                grid-template-columns: 1fr
+            }
+        }
+
+        @media(max-width:700px) {
+            .artist-photo-zone {
+                grid-template-columns: 1fr
+            }
+
+            .artist-photo-preview {
+                width: 100%;
+                height: 260px
+            }
+
+            .artist-row {
+                grid-template-columns: 56px 1fr auto
+            }
+
+            .artist-row .artist-duty-col,
+            .artist-row .artist-order-col {
+                display: none
+            }
+
+            .artist-row .row-actions {
+                grid-column: 1/-1;
+                justify-content: flex-end
+            }
+
+            .artist-counter-row {
+                grid-template-columns: 1fr 1fr
+            }
+
+            .artist-counter:last-child {
+                grid-column: 1/-1
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+    <section class="login-wrap" id="loginView">
+        <div class="login-card">
+            <div class="brand"><img src="logo.png" alt="Echoes of Mercy">
+                <div><strong>Echoes of Mercy</strong><span>Website Administration</span></div>
+            </div>
+            <h1>Admin sign in</h1>
+            <p>Manage songs, YouTube links and the gold “latest update” notification shown on the public website.</p>
+            <form id="loginForm">
+                <div class="field"><label>Email address</label><input id="loginEmail" type="email" autocomplete="email"
+                        required></div>
+                <div class="field"><label>Password</label><input id="loginPassword" type="password"
+                        autocomplete="current-password" required></div><button class="btn btn-primary" type="submit"><i
+                        class="fa-solid fa-lock"></i> Sign in securely</button>
+            </form>
+            <div class="message" id="loginMessage"></div>
+        </div>
+    </section>
+
+    <div class="app hidden" id="appView">
+        <aside class="sidebar">
+            <div class="brand"><img src="logo.png" alt="Echoes of Mercy">
+                <div><strong>Echoes of Mercy</strong><span>Admin Portal</span></div>
+            </div><button class="nav-btn active" data-tab="dashboard"><i class="fa-solid fa-chart-pie"></i>
+                Dashboard</button><button class="nav-btn" data-tab="songs"><i class="fa-solid fa-music"></i>
+                Songs</button><button class="nav-btn" data-tab="artists"><i class="fa-solid fa-users"></i>
+                Artists</button><button class="nav-btn" data-tab="updates"><i class="fa-solid fa-bullhorn"></i> Latest
+                Update</button>
+            <div class="sidebar-bottom"><a class="public-link" href="index.html" target="_blank"><i
+                        class="fa-solid fa-arrow-up-right-from-square"></i> Open public website</a><button
+                    class="nav-btn" id="logoutBtn"><i class="fa-solid fa-right-from-bracket"></i> Sign out</button>
+            </div>
+        </aside>
+        <main class="main">
+            <header class="topbar">
+                <div>
+                    <h2 id="pageTitle">Dashboard</h2>
+                </div>
+                <div class="userbox">
+                    <div class="userdot"><i class="fa-solid fa-user-shield"></i></div>
+                    <div><strong id="adminEmail" style="font-size:.8rem"></strong>
+                        <div style="font-size:.68rem;color:var(--muted)">Administrator</div>
+                    </div>
+                </div>
+            </header>
+            <div class="content">
+                <section class="tab" id="tab-dashboard">
+                    <div class="page-intro">
+                        <div>
+                            <h1>Welcome back</h1>
+                            <p>Manage Echoes of Mercy music, website announcements and promotional posters from one
+                                secure dashboard.</p>
+                        </div><span class="live-chip">Website connected</span>
+                    </div>
+                    <div class="stats">
+                        <div class="stat"><i class="fa-solid fa-music"></i><b id="statSongs">0</b><span>Published
+                                songs</span></div>
+                        <div class="stat"><i class="fa-solid fa-bullhorn"></i><b id="statUpdates">0</b><span>Updates
+                                created</span></div>
+                        <div class="stat"><i class="fa-solid fa-signal"></i><b id="statActive">0</b><span>Active website
+                                alert</span></div>
+                        <div class="stat"><i class="fa-solid fa-image"></i><b id="statPosters">0</b><span>Poster
+                                updates</span></div>
+                    </div>
+                    <div class="panel">
+                        <div class="panel-head">
+                            <div>
+                                <h3>Live website control</h3>
+                                <p>Changes saved here are read directly by index.html through Supabase.</p>
+                            </div><a class="btn btn-light" href="index.html" target="_blank"><i
+                                    class="fa-solid fa-eye"></i> View site</a>
+                        </div>
+                        <div class="panel-body">
+                            <div id="dashboardPreview" class="empty">Loading latest website update…</div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="tab hidden" id="tab-songs">
+                    <div class="panel">
+                        <div class="panel-head">
+                            <div>
+                                <h3 id="songFormTitle">Add a song</h3>
+                                <p>Add the real YouTube link here. The public music cards update automatically.</p>
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <form id="songForm"><input type="hidden" id="songId">
+                                <div class="form-grid">
+                                    <div class="field"><label>Song title</label><input id="songTitle" required
+                                            placeholder="Song title"></div>
+                                    <div class="field"><label>YouTube link</label><input id="songYoutube" type="url"
+                                            required placeholder="https://youtu.be/..."></div>
+                                    <div class="field"><label>Writer</label><input id="songWriter"></div>
+                                    <div class="field"><label>Composer</label><input id="songComposer"></div>
+                                    <div class="field"><label>Lyricist</label><input id="songLyricist"></div>
+                                    <div class="field"><label>Duration</label><input id="songDuration"
+                                            placeholder="05:55"></div>
+                                    <div class="field"><label>Genre</label><input id="songGenre" value="Gospel"></div>
+                                    <div class="field"><label>Display order</label><input id="songOrder" type="number"
+                                            value="100"></div>
+                                    <div class="field full"><label>Description</label><textarea id="songDescription"
+                                            placeholder="Short description shown on the website"></textarea></div>
+                                    <div class="full checkline"><input id="songPublished" type="checkbox" checked><label
+                                            for="songPublished">Published on website</label></div>
+                                    <div class="full actions"><button class="btn btn-primary" type="submit"><i
+                                                class="fa-solid fa-floppy-disk"></i> Save song</button><button
+                                            class="btn btn-light hidden" type="button" id="songCancel">Cancel
+                                            edit</button></div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="panel">
+                        <div class="panel-head">
+                            <div>
+                                <h3>Song library</h3>
+                                <p>These songs feed the public music section and can be selected for the latest-song
+                                    notification.</p>
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <div id="songList" class="song-list"></div>
+                        </div>
+                    </div>
+                </section>
+
+
+                <section class="tab hidden" id="tab-artists">
+                    <div class="page-intro">
+                        <div>
+                            <h1>Artist manager</h1>
+                            <p>Add and manage every Echoes of Mercy artist from this same admin portal. Photos are uploaded to Supabase Storage and published profiles appear automatically on artists.html.</p>
+                        </div>
+                        <a class="btn btn-light" href="artists.html" target="_blank"><i class="fa-solid fa-arrow-up-right-from-square"></i> View artists page</a>
+                    </div>
+
+                    <div class="artist-counter-row">
+                        <div class="artist-counter"><b id="artistStatTotal">0</b><span>Total artists</span></div>
+                        <div class="artist-counter"><b id="artistStatPublished">0</b><span>Published profiles</span></div>
+                        <div class="artist-counter"><b id="artistStatPhotos">0</b><span>Profiles with photos</span></div>
+                    </div>
+
+                    <div class="artist-manager-grid">
+                        <div class="panel sticky-card">
+                            <div class="panel-head">
+                                <div class="panel-head-left">
+                                    <div class="section-icon"><i class="fa-solid fa-user-plus"></i></div>
+                                    <div>
+                                        <h3 id="artistFormTitle">Add an artist</h3>
+                                        <p>Photo, role, booking details and public profile.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                <form id="artistForm">
+                                    <input type="hidden" id="artistId">
+                                    <input type="hidden" id="artistExistingPhoto">
+
+                                    <div class="artist-photo-zone">
+                                        <div class="artist-photo-preview" id="artistPhotoPreview">
+                                            <i class="fa-solid fa-user"></i>
+                                        </div>
+                                        <div>
+                                            <b style="font:800 .88rem Manrope">Profile picture</b>
+                                            <div class="helper">JPG, PNG or WebP · maximum 5 MB.</div>
+                                            <div class="artist-upload-actions">
+                                                <label class="btn btn-light artist-upload-label">
+                                                    <i class="fa-solid fa-cloud-arrow-up"></i> Choose photo
+                                                    <input id="artistPhoto" type="file" accept="image/jpeg,image/png,image/webp">
+                                                </label>
+                                                <button type="button" class="btn btn-danger hidden" id="removeArtistPhoto"><i class="fa-solid fa-trash"></i> Remove</button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-grid" style="margin-top:16px">
+                                        <div class="field"><label>Full name</label><input id="artistName" required placeholder="Artist full name"></div>
+                                        <div class="field"><label>Stage name <span class="optional">OPTIONAL</span></label><input id="artistStageName"></div>
+                                        <div class="field"><label>Duty / voice role</label><input id="artistDuty" required placeholder="Soprano, Alto, Tenor..."></div>
+                                        <div class="field"><label>Booking email</label><input id="artistEmail" type="email" placeholder="artist@email.com"></div>
+                                        <div class="field"><label>Phone <span class="optional">OPTIONAL</span></label><input id="artistPhone"></div>
+                                        <div class="field"><label>Location <span class="optional">OPTIONAL</span></label><input id="artistLocation" placeholder="Tonga, Mpumalanga"></div>
+                                        <div class="field"><label>Experience <span class="optional">OPTIONAL</span></label><input id="artistExperience" placeholder="e.g. 6 years"></div>
+                                        <div class="field"><label>Display order</label><input id="artistOrder" type="number" min="0" value="0"></div>
+                                        <div class="field full"><label>Biography / full details</label><textarea id="artistBio" placeholder="Professional short biography, ministry experience and role..."></textarea></div>
+                                        <div class="field"><label>Instagram <span class="optional">OPTIONAL</span></label><input id="artistInstagram" type="url" placeholder="https://..."></div>
+                                        <div class="field"><label>Facebook <span class="optional">OPTIONAL</span></label><input id="artistFacebook" type="url" placeholder="https://..."></div>
+                                        <div class="field"><label>TikTok <span class="optional">OPTIONAL</span></label><input id="artistTiktok" type="url" placeholder="https://..."></div>
+                                        <div class="field"><label>YouTube <span class="optional">OPTIONAL</span></label><input id="artistYoutube" type="url" placeholder="https://..."></div>
+                                        <div class="full checkline"><input id="artistPublished" type="checkbox" checked><label for="artistPublished">Published on artists.html</label></div>
+                                        <div class="full actions">
+                                            <button class="btn btn-primary" id="artistSaveBtn" type="submit"><i class="fa-solid fa-floppy-disk"></i> Save artist</button>
+                                            <button class="btn btn-light hidden" type="button" id="artistCancel">Cancel edit</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                        <div class="panel">
+                            <div class="panel-head">
+                                <div class="panel-head-left">
+                                    <div class="section-icon"><i class="fa-solid fa-users"></i></div>
+                                    <div>
+                                        <h3>Artist line-up</h3>
+                                        <p>Publish, edit, delete or reorder profiles shown on the public artists page.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                <div class="artist-toolbar" style="margin-bottom:14px">
+                                    <input class="artist-search" id="artistSearch" type="search" placeholder="Search artists...">
+                                    <select id="artistFilter" style="border:1px solid var(--line);border-radius:12px;padding:10px 12px;background:#fff">
+                                        <option value="all">All profiles</option>
+                                        <option value="published">Published</option>
+                                        <option value="hidden">Unpublished</option>
+                                    </select>
+                                </div>
+                                <div class="artist-hint"><i class="fa-solid fa-arrow-up-arrow-down"></i> Use the arrow buttons to change the order artists appear on artists.html.</div>
+                                <div id="artistList" class="artist-list" style="margin-top:14px">
+                                    <div class="empty">Loading artists…</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="tab hidden" id="tab-updates">
+                    <div class="page-intro">
+                        <div>
+                            <h1>Website updates</h1>
+                            <p>Publish a latest song, event poster or visual announcement to the gold notification on
+                                the public website.</p>
+                        </div><span class="live-chip">Public notification system</span>
+                    </div>
+                    <div class="update-layout">
+                        <div class="panel">
+                            <div class="panel-head">
+                                <div class="panel-head-left">
+                                    <div class="section-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+                                    <div>
+                                        <h3>Create a new update</h3>
+                                        <p>Choose what visitors should see when they click the gold notification.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                <div class="type-selector" id="typeSelector">
+                                    <button type="button" class="type-choice active" data-type-choice="song"><i
+                                            class="fa-solid fa-music"></i>
+                                        <div><b>Latest song</b><span>Promote a YouTube release</span></div>
+                                    </button>
+                                    <button type="button" class="type-choice" data-type-choice="event"><i
+                                            class="fa-solid fa-calendar-days"></i>
+                                        <div><b>Event poster</b><span>Upload a show or event poster</span></div>
+                                    </button>
+                                    <button type="button" class="type-choice" data-type-choice="announcement"><i
+                                            class="fa-solid fa-bullhorn"></i>
+                                        <div><b>Announcement</b><span>Post news with optional artwork</span></div>
+                                    </button>
+                                </div>
+                                <form id="updateForm">
+                                    <input type="hidden" id="updateType" value="song">
+                                    <div class="form-grid">
+                                        <div class="field full"><label>Headline</label><input id="updateTitle" required
+                                                placeholder="e.g. Our new song is out now"></div>
+                                        <div class="field full"><label>Message <span
+                                                    class="optional">OPTIONAL</span></label><textarea id="updateBody"
+                                                placeholder="Write a short message visitors will see below the media..."></textarea>
+                                        </div>
+                                        <div class="field full" id="songSelectField"><label>Choose song</label><select
+                                                id="updateSong"></select>
+                                            <div class="helper">Songs are managed from the Songs section, including
+                                                their YouTube links.</div>
+                                        </div>
+                                        <div class="field full hidden" id="posterField">
+                                            <label id="posterLabel">Upload poster</label>
+                                            <div class="upload-zone" id="posterDropZone">
+                                                <input id="updatePoster" type="file"
+                                                    accept="image/jpeg,image/png,image/webp">
+                                                <div class="upload-icon"><i class="fa-solid fa-cloud-arrow-up"></i>
+                                                </div>
+                                                <b>Drop artwork here or click to browse</b><span>JPG, PNG or WebP ·
+                                                    recommended portrait or square artwork</span>
+                                            </div>
+                                            <div class="poster-preview" id="posterPreview"><img id="posterPreviewImg"
+                                                    alt="Poster preview">
+                                                <div class="poster-meta"><span id="posterFileName"></span><button
+                                                        type="button" class="remove-poster"
+                                                        id="removePoster">Remove</button></div>
+                                            </div>
+                                        </div>
+                                        <div class="field full hidden" id="eventUrlField"><label>Event details / booking
+                                                link <span class="optional">OPTIONAL</span></label><input
+                                                id="updateEventUrl" type="url" placeholder="https://..."></div>
+                                        <div class="full checkline"><input id="updateActive" type="checkbox"
+                                                checked><label for="updateActive">Make this the active gold website
+                                                notification</label></div>
+                                        <div class="full actions"><button class="btn btn-primary" id="publishUpdateBtn"
+                                                type="submit"><i class="fa-solid fa-paper-plane"></i> Publish website
+                                                update</button><button class="btn btn-light" type="button"
+                                                id="previewUpdateBtn"><i class="fa-solid fa-eye"></i> Preview</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="sticky-card">
+                            <div class="panel">
+                                <div class="panel-head">
+                                    <div class="panel-head-left">
+                                        <div class="section-icon"><i class="fa-solid fa-display"></i></div>
+                                        <div>
+                                            <h3>Live preview</h3>
+                                            <p>Current gold notification content.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel-body">
+                                    <div id="currentUpdate" class="empty">No active update yet.</div>
+                                </div>
+                            </div>
+                            <div class="panel">
+                                <div class="panel-head">
+                                    <div class="panel-head-left">
+                                        <div class="section-icon"><i class="fa-solid fa-clock-rotate-left"></i></div>
+                                        <div>
+                                            <h3>Recent updates</h3>
+                                            <p>Your latest publishing activity.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="history-list" id="updateHistory">
+                                        <div class="empty">No updates yet.</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                </section>
+            </div>
+        </main>
+        <nav class="mobile-nav"><button class="active" data-tab="dashboard"><i
+                    class="fa-solid fa-chart-pie"></i>Home</button><button data-tab="songs"><i
+                    class="fa-solid fa-music"></i>Songs</button><button data-tab="artists"><i
+                    class="fa-solid fa-users"></i>Artists</button><button data-tab="updates"><i
+                    class="fa-solid fa-bullhorn"></i>Update</button><button id="mobileLogout"><i
+                    class="fa-solid fa-right-from-bracket"></i>Logout</button></nav>
+    </div>
+    <div class="toast" id="toast"></div>
+    <script>
+        const SUPABASE_URL = 'https://yppzepffoyhcujddaczj.supabase.co';
+        const SUPABASE_KEY = 'sb_publishable_NiPwmeMuNV2mdy6TZ4n5yg_ulciLV9J';
+        const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        const $ = id => document.getElementById(id); let songs = []; let artists = []; let user = null; let selectedArtistPhoto = null; let removeArtistPhotoFlag = false;
+        function toast(text) { const t = $('toast'); t.textContent = text; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 2600) }
+        function youtubeId(url = '') { try { const u = new URL(url); if (u.hostname.includes('youtu.be')) return u.pathname.split('/').filter(Boolean)[0] || ''; if (u.searchParams.get('v')) return u.searchParams.get('v'); const p = u.pathname.match(/\/(?:shorts|embed)\/([^/?]+)/); return p ? p[1] : '' } catch { return '' } }
+        function showLogin(msg = '', error = false) { $('appView').classList.add('hidden'); $('loginView').classList.remove('hidden'); if (msg) { $('loginMessage').textContent = msg; $('loginMessage').className = 'message show ' + (error ? 'error' : 'ok') } }
+        function showApp() { $('loginView').classList.add('hidden'); $('appView').classList.remove('hidden'); $('adminEmail').textContent = user?.email || ''; loadAll() }
+        async function verifyAdmin(u) { const { data, error } = await db.rpc('is_admin', { check_uid: u.id }); return !error && data === true }
+        async function bootstrap() { const { data: { session } } = await db.auth.getSession(); if (!session) return showLogin(); user = session.user; if (await verifyAdmin(user)) showApp(); else { await db.auth.signOut(); showLogin('This account is not authorised for Echoes of Mercy administration.', true) } }
+        $('loginForm').addEventListener('submit', async e => { e.preventDefault(); $('loginMessage').className = 'message'; const { data, error } = await db.auth.signInWithPassword({ email: $('loginEmail').value.trim(), password: $('loginPassword').value }); if (error) return showLogin(error.message, true); user = data.user; if (!(await verifyAdmin(user))) { await db.auth.signOut(); return showLogin('This account exists but is not on the admin list.', true) } showApp() });
+        async function logout() { await db.auth.signOut(); location.reload() } $('logoutBtn').onclick = logout; $('mobileLogout').onclick = logout;
+        function switchTab(name) { document.querySelectorAll('.tab').forEach(x => x.classList.add('hidden')); $('tab-' + name).classList.remove('hidden'); document.querySelectorAll('[data-tab]').forEach(x => x.classList.toggle('active', x.dataset.tab === name)); $('pageTitle').textContent = name === 'dashboard' ? 'Dashboard' : name === 'songs' ? 'Songs' : name === 'artists' ? 'Artists' : 'Latest Update' } document.querySelectorAll('[data-tab]').forEach(b => b.addEventListener('click', () => switchTab(b.dataset.tab)));
+        async function loadSongs() { const { data, error } = await db.from('songs').select('*').order('display_order').order('created_at'); if (error) { toast(error.message); return } songs = data || []; $('statSongs').textContent = songs.filter(s => s.is_published).length; renderSongs(); fillSongSelect() }
+        function renderSongs() { const box = $('songList'); if (!songs.length) { box.innerHTML = '<div class="empty">No songs yet.</div>'; return } box.innerHTML = songs.map(s => `<div class="song-row"><img src="https://img.youtube.com/vi/${s.youtube_id}/mqdefault.jpg" alt=""><div><h4>${esc(s.title)}</h4><p>${esc(s.writer || 'Writer not set')} · ${esc(s.duration || 'No duration')} · ${s.is_published ? 'Published' : 'Hidden'}</p><p style="margin-top:3px">${esc(s.youtube_url)}</p></div><div class="row-actions"><button class="icon-btn" onclick="editSong('${s.id}')" title="Edit"><i class="fa-solid fa-pen"></i></button><button class="icon-btn" onclick="deleteSong('${s.id}')" title="Delete"><i class="fa-solid fa-trash"></i></button></div></div>`).join('') }
+        function fillSongSelect() { $('updateSong').innerHTML = songs.filter(s => s.is_published).map(s => `<option value="${s.id}">${esc(s.title)}</option>`).join('') }
+        function esc(v = '') { return String(v).replace(/[&<>'"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[c])) }
+        $('songForm').addEventListener('submit', async e => { e.preventDefault(); const url = $('songYoutube').value.trim(), id = youtubeId(url); if (!id) return toast('Please enter a valid YouTube link.'); const payload = { title: $('songTitle').value.trim(), youtube_url: url, youtube_id: id, writer: $('songWriter').value.trim() || null, composer: $('songComposer').value.trim() || null, lyricist: $('songLyricist').value.trim() || null, duration: $('songDuration').value.trim() || null, genre: $('songGenre').value.trim() || 'Gospel', display_order: Number($('songOrder').value || 100), description: $('songDescription').value.trim() || null, is_published: $('songPublished').checked }; const songId = $('songId').value; const q = songId ? db.from('songs').update(payload).eq('id', songId) : db.from('songs').insert(payload); const { error } = await q; if (error) return toast(error.message); toast(songId ? 'Song updated.' : 'Song added.'); resetSongForm(); await loadSongs() });
+        window.editSong = id => { const s = songs.find(x => x.id === id); if (!s) return; $('songId').value = s.id; $('songTitle').value = s.title; $('songYoutube').value = s.youtube_url; $('songWriter').value = s.writer || ''; $('songComposer').value = s.composer || ''; $('songLyricist').value = s.lyricist || ''; $('songDuration').value = s.duration || ''; $('songGenre').value = s.genre || 'Gospel'; $('songOrder').value = s.display_order; $('songDescription').value = s.description || ''; $('songPublished').checked = s.is_published; $('songFormTitle').textContent = 'Edit song'; $('songCancel').classList.remove('hidden'); window.scrollTo({ top: 0, behavior: 'smooth' }) };
+        window.deleteSong = async id => { if (!confirm('Delete this song from the website library?')) return; const { error } = await db.from('songs').delete().eq('id', id); if (error) return toast(error.message); toast('Song deleted.'); loadSongs() };
+        function resetSongForm() { $('songForm').reset(); $('songId').value = ''; $('songGenre').value = 'Gospel'; $('songOrder').value = '100'; $('songPublished').checked = true; $('songFormTitle').textContent = 'Add a song'; $('songCancel').classList.add('hidden') } $('songCancel').onclick = resetSongForm;
+        document.querySelectorAll('[data-type-choice]').forEach(btn => btn.addEventListener('click', () => { document.querySelectorAll('[data-type-choice]').forEach(x => x.classList.remove('active')); btn.classList.add('active'); $('updateType').value = btn.dataset.typeChoice; renderUpdateFields() }));
+        function renderUpdateFields() { const t = $('updateType').value; $('songSelectField').classList.toggle('hidden', t !== 'song'); $('posterField').classList.toggle('hidden', !(t === 'event' || t === 'announcement')); $('eventUrlField').classList.toggle('hidden', t !== 'event'); $('posterLabel').innerHTML = t === 'announcement' ? 'Announcement artwork <span class="optional">OPTIONAL</span>' : 'Event poster'; }
+        const posterInput = $('updatePoster'), posterDropZone = $('posterDropZone');
+        function showPosterPreview(file) { if (!file) { $('posterPreview').classList.remove('show'); $('posterPreviewImg').src = ''; $('posterFileName').textContent = ''; return } const reader = new FileReader(); reader.onload = e => { $('posterPreviewImg').src = e.target.result; $('posterFileName').textContent = file.name; $('posterPreview').classList.add('show') }; reader.readAsDataURL(file) }
+        posterInput.addEventListener('change', () => showPosterPreview(posterInput.files[0]));
+        ['dragenter', 'dragover'].forEach(ev => posterDropZone.addEventListener(ev, e => { e.preventDefault(); posterDropZone.classList.add('drag') }));['dragleave', 'drop'].forEach(ev => posterDropZone.addEventListener(ev, e => { e.preventDefault(); posterDropZone.classList.remove('drag') }));
+        posterDropZone.addEventListener('drop', e => { const f = e.dataTransfer.files?.[0]; if (f && f.type.startsWith('image/')) { const dt = new DataTransfer(); dt.items.add(f); posterInput.files = dt.files; showPosterPreview(f) } });
+        $('removePoster').onclick = () => { posterInput.value = ''; showPosterPreview(null) };
+        async function uploadPoster(file) { const ext = (file.name.split('.').pop() || 'jpg').toLowerCase(); const path = `posters/${Date.now()}-${crypto.randomUUID()}.${ext}`; const { error } = await db.storage.from('echoes-media').upload(path, file, { cacheControl: '3600', upsert: false }); if (error) throw error; return db.storage.from('echoes-media').getPublicUrl(path).data.publicUrl }
+        $('updateForm').addEventListener('submit', async e => {
+            e.preventDefault(); const type = $('updateType').value; let posterUrl = null, youtubeUrl = null, yid = null, songId = null; const publishBtn = $('publishUpdateBtn'); publishBtn.disabled = true; publishBtn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Publishing...';
+            try {
+                if (type === 'song') { songId = $('updateSong').value; const song = songs.find(x => x.id === songId); if (!song) throw new Error('Select a song first.'); youtubeUrl = song.youtube_url; yid = song.youtube_id }
+                else { const file = posterInput.files[0]; if (type === 'event' && !file) throw new Error('Please upload an event poster.'); if (file) { if (file.size > 8 * 1024 * 1024) throw new Error('Poster must be smaller than 8MB.'); posterUrl = await uploadPoster(file) } }
+                if ($('updateActive').checked) { const { error: offErr } = await db.from('latest_updates').update({ is_active: false }).eq('is_active', true); if (offErr) throw offErr }
+                const payload = { type, title: $('updateTitle').value.trim(), body: $('updateBody').value.trim() || null, song_id: songId, youtube_url: youtubeUrl, youtube_id: yid, poster_url: posterUrl, event_url: type === 'event' ? ($('updateEventUrl').value.trim() || null) : null, is_active: $('updateActive').checked, published_at: new Date().toISOString(), created_by: user.id };
+                const { error } = await db.from('latest_updates').insert(payload); if (error) throw error; toast('Website update published successfully.'); $('updateForm').reset(); $('updateActive').checked = true; $('updateType').value = 'song'; document.querySelectorAll('[data-type-choice]').forEach(x => x.classList.toggle('active', x.dataset.typeChoice === 'song')); showPosterPreview(null); renderUpdateFields(); await loadUpdates();
+            } catch (err) { toast(err.message || 'Could not publish update.') } finally { publishBtn.disabled = false; publishBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Publish website update' }
+        });
+        $('previewUpdateBtn').onclick = () => { const type = $('updateType').value, title = $('updateTitle').value.trim() || 'Your headline will appear here', body = $('updateBody').value.trim() || 'Your message will appear here.'; let media = ''; if (type === 'song') { const song = songs.find(x => x.id === $('updateSong').value); if (song?.youtube_id) media = `<img src="https://img.youtube.com/vi/${song.youtube_id}/hqdefault.jpg" alt="">` } else if (posterInput.files[0] && $('posterPreviewImg').src) { media = `<img src="${$('posterPreviewImg').src}" alt="">` } const fake = { type, title, body, is_active: true, youtube_id: null, poster_url: null }; $('currentUpdate').className = ''; $('currentUpdate').innerHTML = `<div class="update-preview">${media || '<div class="preview-placeholder"><div><i class="fa-solid fa-bullhorn"></i><b>Media preview</b><span>Upload artwork or choose a song to preview it here.</span></div></div>'}<div class="copy"><span class="pill">${esc(type.toUpperCase())} · PREVIEW</span><h4>${esc(title)}</h4><p>${esc(body)}</p></div></div>` };
+        async function loadUpdates() { const { data, error } = await db.from('latest_updates').select('*,songs(title)').order('published_at', { ascending: false }).limit(25); if (error) { toast(error.message); return } const arr = data || []; $('statUpdates').textContent = arr.length; $('statPosters').textContent = arr.filter(x => x.poster_url).length; const current = arr.find(x => x.is_active); $('statActive').textContent = current ? '1' : '0'; renderCurrent(current); renderHistory(arr); $('dashboardPreview').innerHTML = current ? updateCard(current) : '<div class="empty">No active website update.</div>' }
+        function updateCard(u) { const media = u.poster_url ? `<img src="${esc(u.poster_url)}" alt="">` : u.type === 'song' && u.youtube_id ? `<img src="https://img.youtube.com/vi/${u.youtube_id}/hqdefault.jpg" alt="">` : `<div class="preview-placeholder"><div><i class="fa-solid ${u.type === 'event' ? 'fa-calendar-days' : 'fa-bullhorn'}"></i><b>${esc(u.type === 'event' ? 'Event update' : 'Announcement')}</b><span>No artwork attached to this update.</span></div></div>`; return `<div class="update-preview">${media}<div class="copy"><span class="pill">${esc(u.type.toUpperCase())}${u.is_active ? ' · LIVE' : ''}</span><h4>${esc(u.title)}</h4><p>${esc(u.body || 'No description')}</p>${u.is_active ? `<div class="preview-actions"><button class="mini-btn danger" onclick="deactivateUpdate('${u.id}')"><i class="fa-solid fa-circle-stop"></i> Deactivate</button></div>` : ''}</div></div>` }
+        function renderCurrent(u) { $('currentUpdate').className = u ? '' : 'empty'; $('currentUpdate').innerHTML = u ? updateCard(u) : 'No active update yet.' }
+        function renderHistory(arr) { const box = $('updateHistory'); if (!arr.length) { box.innerHTML = '<div class="empty">No updates yet.</div>'; return } box.innerHTML = arr.slice(0, 8).map(u => `<div class="history-item"><div class="history-icon"><i class="fa-solid ${u.type === 'song' ? 'fa-music' : u.type === 'event' ? 'fa-calendar-days' : 'fa-bullhorn'}"></i></div><div><h5>${esc(u.title)}</h5><p>${esc(u.type)} · ${new Date(u.published_at).toLocaleDateString('en-ZA', { day: '2-digit', month: 'short', year: 'numeric' })}${u.poster_url ? ' · artwork' : ''}</p></div><div><span class="history-status ${u.is_active ? 'live' : ''}">${u.is_active ? 'LIVE' : 'ARCHIVED'}</span></div></div>`).join('') }
+        window.deactivateUpdate = async id => { if (!confirm('Remove this update from the gold website notification?')) return; const { error } = await db.from('latest_updates').update({ is_active: false }).eq('id', id); if (error) return toast(error.message); toast('Website notification deactivated.'); loadUpdates() };
+
+        /* ===== ARTIST MANAGER ===== */
+        function artistInitials(name = 'Artist') {
+            return name.split(/\s+/).filter(Boolean).slice(0, 2).map(x => x[0]?.toUpperCase() || '').join('');
+        }
+
+        function artistFiltered() {
+            const q = ($('artistSearch')?.value || '').trim().toLowerCase();
+            const filter = $('artistFilter')?.value || 'all';
+            return artists.filter(a => {
+                const hay = [a.name, a.stage_name, a.duty, a.email, a.location, a.bio].join(' ').toLowerCase();
+                const qOk = !q || hay.includes(q);
+                const fOk = filter === 'all' || (filter === 'published' && a.is_published) || (filter === 'hidden' && !a.is_published);
+                return qOk && fOk;
+            });
+        }
+
+        function updateArtistStats() {
+            $('artistStatTotal').textContent = artists.length;
+            $('artistStatPublished').textContent = artists.filter(a => a.is_published).length;
+            $('artistStatPhotos').textContent = artists.filter(a => a.photo_url).length;
+        }
+
+        function renderArtists() {
+            const box = $('artistList');
+            const list = artistFiltered();
+            if (!list.length) {
+                box.innerHTML = '<div class="empty">No artist profiles found.</div>';
+                return;
+            }
+            box.innerHTML = list.map(a => `
+                <div class="artist-row">
+                    <div class="artist-thumb">${a.photo_url ? `<img src="${esc(a.photo_url)}" alt="${esc(a.name)}">` : `<span>${esc(artistInitials(a.name))}</span>`}</div>
+                    <div>
+                        <h4>${esc(a.name)}</h4>
+                        <p>${esc(a.stage_name || a.location || 'Echoes of Mercy')}</p>
+                        <p style="margin-top:3px">${esc(a.email || 'No booking email')}</p>
+                    </div>
+                    <div class="artist-duty-col"><p><b style="color:var(--ink)">Duty</b><br>${esc(a.duty || 'Artist')}</p></div>
+                    <div class="artist-order-col"><p><b style="color:var(--ink)">Order</b><br>${Number(a.display_order || 0)}</p></div>
+                    <div>
+                        <span class="artist-status ${a.is_published ? 'live' : 'hidden-state'}">
+                            <i class="fa-solid ${a.is_published ? 'fa-eye' : 'fa-eye-slash'}"></i>
+                            ${a.is_published ? 'PUBLISHED' : 'HIDDEN'}
+                        </span>
+                    </div>
+                    <div class="row-actions">
+                        <button class="icon-btn" onclick="moveArtist('${a.id}',-1)" title="Move up"><i class="fa-solid fa-arrow-up"></i></button>
+                        <button class="icon-btn" onclick="moveArtist('${a.id}',1)" title="Move down"><i class="fa-solid fa-arrow-down"></i></button>
+                        <button class="icon-btn" onclick="toggleArtistPublish('${a.id}')" title="${a.is_published ? 'Unpublish' : 'Publish'}"><i class="fa-solid ${a.is_published ? 'fa-eye-slash' : 'fa-eye'}"></i></button>
+                        <button class="icon-btn" onclick="editArtist('${a.id}')" title="Edit"><i class="fa-solid fa-pen"></i></button>
+                        <button class="icon-btn" onclick="deleteArtist('${a.id}')" title="Delete"><i class="fa-solid fa-trash"></i></button>
+                    </div>
+                </div>`).join('');
+        }
+
+        async function loadArtists() {
+            const { data, error } = await db.from('artists').select('*').order('display_order').order('created_at');
+            if (error) {
+                $('artistList').innerHTML = `<div class="empty">Could not load artists: ${esc(error.message)}</div>`;
+                toast(error.message);
+                return;
+            }
+            artists = data || [];
+            updateArtistStats();
+            renderArtists();
+        }
+
+        function resetArtistForm() {
+            $('artistForm').reset();
+            $('artistId').value = '';
+            $('artistExistingPhoto').value = '';
+            $('artistOrder').value = artists.length;
+            $('artistPublished').checked = true;
+            $('artistFormTitle').textContent = 'Add an artist';
+            $('artistCancel').classList.add('hidden');
+            $('artistPhoto').value = '';
+            $('artistPhotoPreview').innerHTML = '<i class="fa-solid fa-user"></i>';
+            $('removeArtistPhoto').classList.add('hidden');
+            selectedArtistPhoto = null;
+            removeArtistPhotoFlag = false;
+        }
+
+        window.editArtist = id => {
+            const a = artists.find(x => x.id === id);
+            if (!a) return;
+            $('artistId').value = a.id;
+            $('artistExistingPhoto').value = a.photo_url || '';
+            $('artistName').value = a.name || '';
+            $('artistStageName').value = a.stage_name || '';
+            $('artistDuty').value = a.duty || '';
+            $('artistEmail').value = a.email || '';
+            $('artistPhone').value = a.phone || '';
+            $('artistLocation').value = a.location || '';
+            $('artistExperience').value = a.experience || '';
+            $('artistOrder').value = a.display_order ?? 0;
+            $('artistBio').value = a.bio || '';
+            $('artistInstagram').value = a.instagram_url || '';
+            $('artistFacebook').value = a.facebook_url || '';
+            $('artistTiktok').value = a.tiktok_url || '';
+            $('artistYoutube').value = a.youtube_url || '';
+            $('artistPublished').checked = !!a.is_published;
+            selectedArtistPhoto = null;
+            removeArtistPhotoFlag = false;
+            if (a.photo_url) {
+                $('artistPhotoPreview').innerHTML = `<img src="${esc(a.photo_url)}" alt="${esc(a.name)}">`;
+                $('removeArtistPhoto').classList.remove('hidden');
+            } else {
+                $('artistPhotoPreview').innerHTML = '<i class="fa-solid fa-user"></i>';
+                $('removeArtistPhoto').classList.add('hidden');
+            }
+            $('artistFormTitle').textContent = 'Edit artist';
+            $('artistCancel').classList.remove('hidden');
+            switchTab('artists');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        };
+
+        function artistStoragePath(url = '') {
+            try {
+                const marker = '/storage/v1/object/public/echoes-media/';
+                const i = url.indexOf(marker);
+                return i === -1 ? null : decodeURIComponent(url.slice(i + marker.length));
+            } catch { return null }
+        }
+
+        async function removeArtistStorageFile(url) {
+            const path = artistStoragePath(url);
+            if (!path) return;
+            const { error } = await db.storage.from('echoes-media').remove([path]);
+            if (error) console.warn(error.message);
+        }
+
+        async function uploadArtistPhoto(file, artistId) {
+            if (!file) return null;
+            if (file.size > 5 * 1024 * 1024) throw new Error('Artist photo must be 5MB or smaller.');
+            const ext = (file.name.split('.').pop() || 'jpg').toLowerCase().replace(/[^a-z0-9]/g, '') || 'jpg';
+            const path = `artists/${artistId}/${Date.now()}-${crypto.randomUUID()}.${ext}`;
+            const { error } = await db.storage.from('echoes-media').upload(path, file, {
+                cacheControl: '3600',
+                upsert: false,
+                contentType: file.type || undefined
+            });
+            if (error) throw error;
+            return {
+                path,
+                url: db.storage.from('echoes-media').getPublicUrl(path).data.publicUrl
+            };
+        }
+
+        $('artistPhoto').addEventListener('change', () => {
+            const file = $('artistPhoto').files?.[0];
+            if (!file) return;
+            if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type)) {
+                $('artistPhoto').value = '';
+                return toast('Please choose a JPG, PNG or WebP image.');
+            }
+            if (file.size > 5 * 1024 * 1024) {
+                $('artistPhoto').value = '';
+                return toast('Artist photo must be 5MB or smaller.');
+            }
+            selectedArtistPhoto = file;
+            removeArtistPhotoFlag = false;
+            const reader = new FileReader();
+            reader.onload = e => {
+                $('artistPhotoPreview').innerHTML = `<img src="${e.target.result}" alt="Artist preview">`;
+                $('removeArtistPhoto').classList.remove('hidden');
+            };
+            reader.readAsDataURL(file);
+        });
+
+        $('removeArtistPhoto').onclick = () => {
+            selectedArtistPhoto = null;
+            $('artistPhoto').value = '';
+            removeArtistPhotoFlag = true;
+            $('artistPhotoPreview').innerHTML = '<i class="fa-solid fa-user"></i>';
+            $('removeArtistPhoto').classList.add('hidden');
+        };
+
+        $('artistForm').addEventListener('submit', async e => {
+            e.preventDefault();
+            const saveBtn = $('artistSaveBtn');
+            const existingId = $('artistId').value;
+            const artistId = existingId || crypto.randomUUID();
+            const oldPhoto = $('artistExistingPhoto').value || null;
+            let uploaded = null;
+
+            const payload = {
+                id: artistId,
+                name: $('artistName').value.trim(),
+                stage_name: $('artistStageName').value.trim() || null,
+                duty: $('artistDuty').value.trim(),
+                bio: $('artistBio').value.trim() || null,
+                email: $('artistEmail').value.trim() || null,
+                phone: $('artistPhone').value.trim() || null,
+                location: $('artistLocation').value.trim() || null,
+                experience: $('artistExperience').value.trim() || null,
+                instagram_url: $('artistInstagram').value.trim() || null,
+                facebook_url: $('artistFacebook').value.trim() || null,
+                tiktok_url: $('artistTiktok').value.trim() || null,
+                youtube_url: $('artistYoutube').value.trim() || null,
+                display_order: Number($('artistOrder').value || 0),
+                is_published: $('artistPublished').checked,
+                photo_url: removeArtistPhotoFlag ? null : oldPhoto
+            };
+
+            if (!payload.name || !payload.duty) return toast('Artist name and duty are required.');
+
+            saveBtn.disabled = true;
+            saveBtn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Saving...';
+
+            try {
+                if (selectedArtistPhoto) {
+                    uploaded = await uploadArtistPhoto(selectedArtistPhoto, artistId);
+                    payload.photo_url = uploaded.url;
+                }
+
+                const { error } = await db.from('artists').upsert(payload, { onConflict: 'id' });
+                if (error) throw error;
+
+                if (uploaded && oldPhoto && oldPhoto !== uploaded.url) await removeArtistStorageFile(oldPhoto);
+                if (removeArtistPhotoFlag && oldPhoto) await removeArtistStorageFile(oldPhoto);
+
+                toast(existingId ? 'Artist updated successfully.' : 'Artist added successfully.');
+                resetArtistForm();
+                await loadArtists();
+            } catch (err) {
+                if (uploaded?.path) await db.storage.from('echoes-media').remove([uploaded.path]);
+                toast(err.message || 'Could not save artist.');
+            } finally {
+                saveBtn.disabled = false;
+                saveBtn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Save artist';
+            }
+        });
+
+        $('artistCancel').onclick = resetArtistForm;
+        $('artistSearch').addEventListener('input', renderArtists);
+        $('artistFilter').addEventListener('change', renderArtists);
+
+        window.toggleArtistPublish = async id => {
+            const a = artists.find(x => x.id === id);
+            if (!a) return;
+            const next = !a.is_published;
+            const { error } = await db.from('artists').update({ is_published: next }).eq('id', id);
+            if (error) return toast(error.message);
+            a.is_published = next;
+            updateArtistStats();
+            renderArtists();
+            toast(next ? 'Artist published.' : 'Artist unpublished.');
+        };
+
+        window.deleteArtist = async id => {
+            const a = artists.find(x => x.id === id);
+            if (!a || !confirm(`Delete ${a.name} from the artist line-up?`)) return;
+            const { error } = await db.from('artists').delete().eq('id', id);
+            if (error) return toast(error.message);
+            if (a.photo_url) await removeArtistStorageFile(a.photo_url);
+            artists = artists.filter(x => x.id !== id);
+            await saveArtistOrder(false);
+            updateArtistStats();
+            renderArtists();
+            toast('Artist deleted.');
+        };
+
+        async function saveArtistOrder(notify = true) {
+            for (let i = 0; i < artists.length; i++) {
+                const { error } = await db.from('artists').update({ display_order: i }).eq('id', artists[i].id);
+                if (error) throw error;
+                artists[i].display_order = i;
+            }
+            if (notify) toast('Artist order updated.');
+        }
+
+        window.moveArtist = async (id, direction) => {
+            const index = artists.findIndex(x => x.id === id);
+            const target = index + direction;
+            if (index < 0 || target < 0 || target >= artists.length) return;
+            [artists[index], artists[target]] = [artists[target], artists[index]];
+            renderArtists();
+            try {
+                await saveArtistOrder();
+            } catch (err) {
+                toast(err.message || 'Could not save artist order.');
+                await loadArtists();
+            }
+        };
+
+        async function loadAll() { await Promise.all([loadSongs(), loadArtists(), loadUpdates()]) }
+        renderUpdateFields(); bootstrap();
+    </script>
+</body>
+
+</html>
