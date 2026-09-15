@@ -2516,7 +2516,25 @@ position: relative;
             }
         }
 
-    </style>
+    
+/* FEATURED GROUP PHOTO */
+.group-photo-section{padding:88px 0;background:#fff}
+.group-photo-wrap{display:grid;grid-template-columns:.82fr 1.18fr;gap:46px;align-items:center}
+.group-photo-copy{max-width:480px}
+.group-photo-copy .eyebrow{margin-bottom:15px}
+.group-photo-copy h2{margin-bottom:18px}
+.group-photo-copy p{margin:0 0 24px}
+.group-photo-frame{position:relative;padding:12px;background:#fff;border:1px solid var(--line);border-radius:34px;box-shadow:var(--shadow)}
+.group-photo-frame:before{content:"";position:absolute;width:120px;height:120px;left:-26px;top:-26px;border-radius:32px;background:var(--soft-purple);z-index:0}
+.group-photo-frame:after{content:"";position:absolute;width:90px;height:90px;right:-22px;bottom:-22px;border-radius:50%;background:var(--soft-green);z-index:0}
+.group-photo-media{position:relative;z-index:1;overflow:hidden;border-radius:25px;background:linear-gradient(135deg,var(--soft-purple),var(--soft-blue));aspect-ratio:16/10}
+.group-photo-media img{width:100%;height:100%;object-fit:cover;object-position:center}
+.group-photo-label{position:absolute;z-index:2;left:26px;bottom:24px;display:flex;align-items:center;gap:10px;padding:11px 14px;border-radius:14px;background:#fff;color:var(--ink);box-shadow:0 12px 30px rgba(31,33,64,.18);font-size:.78rem;font-weight:800}
+.group-photo-label i{color:var(--purple)}
+@media(max-width:980px){.group-photo-wrap{grid-template-columns:1fr;gap:30px}.group-photo-copy{max-width:680px}}
+@media(max-width:640px){.group-photo-section{padding:62px 0}.group-photo-wrap{gap:24px}.group-photo-frame{padding:7px;border-radius:23px}.group-photo-media{border-radius:18px;aspect-ratio:4/3}.group-photo-frame:before{width:72px;height:72px;left:-10px;top:-10px;border-radius:20px}.group-photo-frame:after{width:58px;height:58px;right:-9px;bottom:-9px}.group-photo-label{left:16px;bottom:15px;padding:8px 10px;border-radius:11px;font-size:.67rem}}
+
+</style>
 </head>
 
 <body>
@@ -2669,7 +2687,27 @@ position: relative;
             </div>
         </section>
 
-        <section class="story" id="about">
+        
+<section class="group-photo-section" id="group-photo">
+  <div class="container">
+    <div class="group-photo-wrap">
+      <div class="group-photo-copy reveal">
+        <span class="eyebrow">Founder &amp; CEO</span>
+        <h2>Mr Sipho Michael Ngomane</h2>
+        <p>Founder and CEO of Echoes of Mercy Gospel Group. This dedicated section honours the leadership and vision behind the ministry.</p>
+        <a href="artists.html" class="btn btn-light"><i class="fa-solid fa-people-group"></i> Meet Our Artists</a>
+      </div>
+      <div class="group-photo-frame reveal">
+        <div class="group-photo-media">
+          <img src="founder.jpg" alt="Mr Sipho Michael Ngomane, Founder and CEO of Echoes of Mercy Gospel Group" loading="lazy">
+          <div class="group-photo-label"><i class="fa-solid fa-user-tie"></i> Founder &amp; CEO · Echoes of Mercy Gospel Group</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="story" id="about">
             <div class="container story-grid">
                 <div class="story-art reveal">
                     <div class="blob-one"></div>
