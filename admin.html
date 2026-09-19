@@ -12,7 +12,7 @@
         href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.105.0"></script>
     <style>
         :root {
             --ink: #1d2140;
@@ -1420,7 +1420,51 @@
             }
         }
 
-    </style>
+    
+/* ===== ADMIN OPERATIONS CENTER ===== */
+.admin-profile-card{display:flex;align-items:center;gap:12px}
+.admin-avatar{width:42px;height:42px;border-radius:14px;background:linear-gradient(135deg,#efecff,#eaf8ff);color:var(--purple);display:grid;place-items:center;font-weight:900}
+.admin-name{font:800 .8rem Manrope}.admin-meta{font-size:.66rem;color:var(--muted)}
+.ops-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:22px}
+.ops-card{background:#fff;border:1px solid var(--line);border-radius:20px;padding:18px;box-shadow:0 8px 22px rgba(55,48,104,.05)}
+.ops-card .icon{width:40px;height:40px;border-radius:13px;display:grid;place-items:center;background:#efecff;color:var(--purple);margin-bottom:12px}
+.ops-card b{display:block;font:800 1.55rem Manrope}.ops-card span{font-size:.74rem;color:var(--muted)}
+.activity-list,.admin-list{display:grid;gap:10px}
+.activity-item,.admin-person{border:1px solid var(--line);border-radius:16px;padding:13px 14px;background:#fff;display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center}
+.activity-icon{width:40px;height:40px;border-radius:13px;background:#f1efff;color:var(--purple);display:grid;place-items:center}
+.activity-item h4,.admin-person h4{margin:0 0 3px;font:800 .84rem Manrope}
+.activity-item p,.admin-person p{margin:0;color:var(--muted);font-size:.7rem;line-height:1.5}
+.activity-time{font-size:.65rem;color:var(--muted);text-align:right}
+.status-dot{display:inline-flex;align-items:center;gap:6px;font-size:.67rem;font-weight:900;color:#0d855e}
+.status-dot:before{content:"";width:7px;height:7px;border-radius:50%;background:#1fb884}
+.security-note{padding:14px 16px;border-radius:16px;background:#fff9e9;border:1px solid #f4e3a8;color:#745b13;font-size:.75rem;line-height:1.55}
+.detail-table{width:100%;border-collapse:collapse}.detail-table th,.detail-table td{text-align:left;padding:12px 10px;border-bottom:1px solid var(--line);font-size:.75rem;vertical-align:top}.detail-table th{color:var(--muted);font-size:.66rem;text-transform:uppercase;letter-spacing:.05em}
+@media(max-width:1100px){.ops-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:700px){.ops-grid{grid-template-columns:1fr 1fr;gap:10px}.activity-item,.admin-person{grid-template-columns:auto 1fr}.activity-time{grid-column:2;text-align:left}.detail-table{display:block;overflow-x:auto}.admin-profile-card .admin-meta{display:none}}
+
+
+/* ===== PRIVATE ADMIN AUTH + PASSKEY ===== */
+.auth-switch{display:flex;gap:8px;margin:16px 0 5px}
+.auth-switch button{flex:1;border:1px solid var(--line);background:#fff;border-radius:12px;padding:10px;font-weight:800;color:var(--muted)}
+.auth-switch button.active{background:#f1efff;border-color:#c9c1ff;color:var(--purple)}
+.auth-link{border:0;background:none;color:var(--purple);font-weight:800;padding:8px 0}
+.auth-divider{display:flex;align-items:center;gap:10px;color:#a0a2b2;font-size:.7rem;margin:15px 0}.auth-divider:before,.auth-divider:after{content:"";height:1px;background:var(--line);flex:1}
+.passkey-btn{width:100%;background:#171a35;color:#fff;border:0;border-radius:14px;min-height:48px;font-weight:900;display:flex;align-items:center;justify-content:center;gap:9px}
+.auth-note{margin-top:13px;padding:11px 12px;background:#f7f7fc;border:1px solid var(--line);border-radius:12px;color:var(--muted);font-size:.7rem;line-height:1.5}
+.security-view{position:fixed;inset:0;background:#f7f7fc;z-index:300;display:grid;place-items:center;padding:22px}
+.security-card{width:min(520px,100%);background:#fff;border:1px solid var(--line);border-radius:26px;padding:28px;box-shadow:var(--shadow)}
+.security-icon{width:58px;height:58px;border-radius:18px;background:#efecff;color:var(--purple);display:grid;place-items:center;font-size:1.35rem;margin-bottom:18px}
+.security-card h2{font:800 1.6rem Manrope;margin:0 0 8px}.security-card>p{color:var(--muted);line-height:1.6;font-size:.83rem}
+.password-rules{padding:12px 14px;background:#fafaff;border:1px solid var(--line);border-radius:13px;color:var(--muted);font-size:.72rem;line-height:1.6;margin:12px 0}
+.security-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:16px}
+.security-actions .btn{flex:1}
+.security-settings{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.security-option{border:1px solid var(--line);border-radius:18px;padding:17px;background:#fff}
+.security-option i{width:40px;height:40px;border-radius:13px;background:#efecff;color:var(--purple);display:grid;place-items:center;margin-bottom:11px}
+.security-option h4{margin:0 0 5px;font:800 .9rem Manrope}.security-option p{margin:0 0 13px;color:var(--muted);font-size:.72rem;line-height:1.5}
+@media(max-width:650px){.security-settings{grid-template-columns:1fr}.security-actions{display:grid}.security-actions .btn{width:100%}}
+
+</style>
 </head>
 
 <body>
@@ -1430,19 +1474,51 @@
                 <div><strong>Echoes of Mercy</strong><span>Website Administration</span></div>
             </div>
             <h1>Admin sign in</h1>
-            <p>Manage songs, YouTube links and the gold “latest update” notification shown on the public website.</p>
+            <p>Secure operations portal for website content, artists, announcements, administrator identities and activity monitoring.</p>
             <form id="loginForm">
-                <div class="field"><label>Email address</label><input id="loginEmail" type="email" autocomplete="email"
-                        required></div>
-                <div class="field"><label>Password</label><input id="loginPassword" type="password"
-                        autocomplete="current-password" required></div><button class="btn btn-primary" type="submit"><i
-                        class="fa-solid fa-lock"></i> Sign in securely</button>
-            </form>
-            <div class="message" id="loginMessage"></div>
+  <div class="field"><label>Email address</label><input id="loginEmail" type="email" autocomplete="email" required></div>
+  <div class="field"><label>Password</label><input id="loginPassword" type="password" autocomplete="current-password" required></div>
+  <button class="btn btn-primary" type="submit"><i class="fa-solid fa-lock"></i> Sign in securely</button>
+</form>
+<button class="auth-link" type="button" id="forgotPasswordBtn">Forgot password?</button>
+<div class="auth-divider">OR</div>
+<button class="passkey-btn" type="button" id="passkeyLoginBtn"><i class="fa-solid fa-fingerprint"></i> Face / fingerprint login</button>
+<div class="auth-note"><i class="fa-solid fa-shield-halved"></i> Private administrator portal. There is no public account registration. Biometric sign-in uses a device passkey; your face or fingerprint data stays with your device/provider and is not stored by this website.</div>
+<div class="message" id="loginMessage"></div>
         </div>
     </section>
 
-    <div class="app hidden" id="appView">
+    
+<section class="security-view hidden" id="passwordView">
+  <div class="security-card">
+    <div class="security-icon"><i class="fa-solid fa-key"></i></div>
+    <h2 id="passwordViewTitle">Create your private password</h2>
+    <p id="passwordViewCopy">You are using a temporary administrator password. Create a password known only to you before entering the portal.</p>
+    <form id="passwordForm">
+      <div class="field"><label>New password</label><input id="newPassword" type="password" autocomplete="new-password" minlength="10" required></div>
+      <div class="field"><label>Confirm new password</label><input id="confirmPassword" type="password" autocomplete="new-password" minlength="10" required></div>
+      <div class="password-rules"><i class="fa-solid fa-circle-check"></i> Use at least 10 characters. A longer unique password or passphrase is recommended.</div>
+      <button class="btn btn-primary" style="width:100%" type="submit"><i class="fa-solid fa-shield-halved"></i> Save new password</button>
+    </form>
+    <div class="message" id="passwordMessage"></div>
+  </div>
+</section>
+
+<section class="security-view hidden" id="forgotView">
+  <div class="security-card">
+    <div class="security-icon"><i class="fa-solid fa-envelope-open-text"></i></div>
+    <h2>Reset your password</h2>
+    <p>Enter the email address of your authorised administrator account. If it is eligible, a secure recovery email will be sent.</p>
+    <form id="forgotForm">
+      <div class="field"><label>Administrator email</label><input id="forgotEmail" type="email" autocomplete="email" required></div>
+      <button class="btn btn-primary" style="width:100%" type="submit"><i class="fa-solid fa-paper-plane"></i> Send reset email</button>
+    </form>
+    <button class="auth-link" type="button" id="backToLogin">Back to sign in</button>
+    <div class="message" id="forgotMessage"></div>
+  </div>
+</section>
+
+<div class="app hidden" id="appView">
         <aside class="sidebar">
             <div class="brand"><img src="logo.png" alt="Echoes of Mercy">
                 <div><strong>Echoes of Mercy</strong><span>Admin Portal</span></div>
@@ -1450,7 +1526,10 @@
                 Dashboard</button><button class="nav-btn" data-tab="songs"><i class="fa-solid fa-music"></i>
                 Songs</button><button class="nav-btn" data-tab="artists"><i class="fa-solid fa-users"></i>
                 Artists</button><button class="nav-btn" data-tab="updates"><i class="fa-solid fa-bullhorn"></i> Latest
-                Update</button>
+                Update</button><button class="nav-btn" data-tab="activity"><i class="fa-solid fa-clock-rotate-left"></i>
+                Activity</button><button class="nav-btn" data-tab="admins"><i class="fa-solid fa-user-shield"></i>
+                Admin Team</button><button class="nav-btn" data-tab="security"><i class="fa-solid fa-fingerprint"></i>
+                Security</button>
             <div class="sidebar-bottom"><a class="public-link" href="index.html" target="_blank"><i
                         class="fa-solid fa-arrow-up-right-from-square"></i> Open public website</a><button
                     class="nav-btn" id="logoutBtn"><i class="fa-solid fa-right-from-bracket"></i> Sign out</button>
@@ -1461,12 +1540,11 @@
                 <div>
                     <h2 id="pageTitle">Dashboard</h2>
                 </div>
-                <div class="userbox">
-                    <div class="userdot"><i class="fa-solid fa-user-shield"></i></div>
-                    <div><strong id="adminEmail" style="font-size:.8rem"></strong>
-                        <div style="font-size:.68rem;color:var(--muted)">Administrator</div>
-                    </div>
-                </div>
+                <div class="userbox admin-profile-card">
+        <div class="admin-avatar" id="adminInitials"><i class="fa-solid fa-user-shield"></i></div>
+        <div><div class="admin-name" id="adminFullName">Administrator</div>
+        <div class="admin-meta" id="adminContact">Loading profile…</div></div>
+    </div>
             </header>
             <div class="content">
                 <section class="tab" id="tab-dashboard">
@@ -1487,7 +1565,19 @@
                         <div class="stat"><i class="fa-solid fa-image"></i><b id="statPosters">0</b><span>Poster
                                 updates</span></div>
                     </div>
-                    <div class="panel">
+                    
+<div class="ops-grid">
+  <div class="ops-card"><div class="icon"><i class="fa-solid fa-users-gear"></i></div><b id="statAdmins">0</b><span>Authorised administrators</span></div>
+  <div class="ops-card"><div class="icon"><i class="fa-solid fa-clock-rotate-left"></i></div><b id="statActivity">0</b><span>Recorded admin actions</span></div>
+  <div class="ops-card"><div class="icon"><i class="fa-solid fa-user-clock"></i></div><b id="statLastAction">—</b><span>Latest portal activity</span></div>
+  <div class="ops-card"><div class="icon"><i class="fa-solid fa-shield-halved"></i></div><b>RLS</b><span>Database access protected</span></div>
+</div>
+<div class="panel">
+  <div class="panel-head"><div class="panel-head-left"><div class="section-icon"><i class="fa-solid fa-wave-square"></i></div><div><h3>Recent administrator activity</h3><p>See who changed what across the website.</p></div></div>
+  <button class="btn btn-light" type="button" onclick="switchTab('activity')"><i class="fa-solid fa-list"></i> Full audit trail</button></div>
+  <div class="panel-body"><div id="dashboardActivity" class="activity-list"><div class="empty">Loading activity…</div></div></div>
+</div>
+<div class="panel">
                         <div class="panel-head">
                             <div>
                                 <h3>Live website control</h3>
@@ -1651,7 +1741,35 @@
                     </div>
                 </section>
 
-                <section class="tab hidden" id="tab-updates">
+                
+<section class="tab hidden" id="tab-activity">
+  <div class="page-intro"><div><h1>Admin activity</h1><p>A permanent audit trail showing who signed in and who changed website content.</p></div><span class="live-chip">Audit monitoring</span></div>
+  <div class="panel">
+    <div class="panel-head"><div class="panel-head-left"><div class="section-icon"><i class="fa-solid fa-clock-rotate-left"></i></div><div><h3>Activity log</h3><p>Full names, email, phone, action, area and time are recorded.</p></div></div><button class="btn btn-light" id="refreshActivity" type="button"><i class="fa-solid fa-rotate"></i> Refresh</button></div>
+    <div class="panel-body"><div id="activityList" class="activity-list"><div class="empty">Loading activity…</div></div></div>
+  </div>
+</section>
+
+<section class="tab hidden" id="tab-admins">
+  <div class="page-intro"><div><h1>Admin team</h1><p>Monitor the three people authorised to manage Echoes of Mercy and their account details.</p></div><span class="live-chip">3-admin ready</span></div>
+  <div class="security-note" style="margin-bottom:18px"><i class="fa-solid fa-lock"></i> Admin access is tied to Supabase Auth. Never share one password between people. Each administrator must have their own login so every action can be attributed correctly.</div>
+  <div class="panel">
+    <div class="panel-head"><div class="panel-head-left"><div class="section-icon"><i class="fa-solid fa-users-gear"></i></div><div><h3>Authorised administrators</h3><p>Identity and contact information used by the audit system.</p></div></div></div>
+    <div class="panel-body"><div id="adminList" class="admin-list"><div class="empty">Loading administrators…</div></div></div>
+  </div>
+</section>
+
+
+<section class="tab hidden" id="tab-security">
+  <div class="page-intro"><div><h1>Account security</h1><p>Manage your own password and passkey. A passkey can use Face ID, Touch ID, Windows Hello, Android biometrics, a device PIN or a security key depending on the device.</p></div><span class="live-chip">Private account</span></div>
+  <div class="security-settings">
+    <div class="security-option"><i class="fa-solid fa-fingerprint"></i><h4>Face / fingerprint login</h4><p>Register a passkey on this device. After enrolment you can sign in without typing your password.</p><button class="btn btn-primary" type="button" id="registerPasskey"><i class="fa-solid fa-plus"></i> Register this device</button></div>
+    <div class="security-option"><i class="fa-solid fa-key"></i><h4>Change password</h4><p>Replace your current password with a new private password.</p><button class="btn btn-light" type="button" id="changePasswordBtn"><i class="fa-solid fa-pen"></i> Change password</button></div>
+  </div>
+  <div class="panel" style="margin-top:18px"><div class="panel-head"><div><h3>Registered passkeys</h3><p>Passkeys connected to your administrator account.</p></div><button class="btn btn-light" id="refreshPasskeys" type="button"><i class="fa-solid fa-rotate"></i> Refresh</button></div><div class="panel-body"><div id="passkeyList" class="activity-list"><div class="empty">Open this section to load passkeys.</div></div></div></div>
+</section>
+
+<section class="tab hidden" id="tab-updates">
                     <div class="page-intro">
                         <div>
                             <h1>Website updates</h1>
@@ -1771,8 +1889,7 @@
         <nav class="mobile-nav"><button class="active" data-tab="dashboard"><i
                     class="fa-solid fa-chart-pie"></i>Home</button><button data-tab="songs"><i
                     class="fa-solid fa-music"></i>Songs</button><button data-tab="artists"><i
-                    class="fa-solid fa-users"></i>Artists</button><button data-tab="updates"><i
-                    class="fa-solid fa-bullhorn"></i>Update</button><button id="mobileLogout"><i
+                    class="fa-solid fa-users"></i>Artists</button><button data-tab="updates"><i class="fa-solid fa-bullhorn"></i>Update</button><button data-tab="activity"><i class="fa-solid fa-clock-rotate-left"></i>Activity</button><button id="mobileLogout"><i
                     class="fa-solid fa-right-from-bracket"></i>Logout</button></nav>
     </div>
     <div class="toast" id="toast"></div>
@@ -1780,16 +1897,58 @@
         const SUPABASE_URL = 'https://yppzepffoyhcujddaczj.supabase.co';
         const SUPABASE_KEY = 'sb_publishable_NiPwmeMuNV2mdy6TZ4n5yg_ulciLV9J';
         const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-        const $ = id => document.getElementById(id); let songs = []; let artists = []; let user = null; let selectedArtistPhoto = null; let removeArtistPhotoFlag = false;
+        const $ = id => document.getElementById(id); let songs = []; let artists = []; let user = null; let adminProfile = null; let adminProfiles = []; let auditLogs = []; let selectedArtistPhoto = null; let removeArtistPhotoFlag = false;
         function toast(text) { const t = $('toast'); t.textContent = text; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 2600) }
         function youtubeId(url = '') { try { const u = new URL(url); if (u.hostname.includes('youtu.be')) return u.pathname.split('/').filter(Boolean)[0] || ''; if (u.searchParams.get('v')) return u.searchParams.get('v'); const p = u.pathname.match(/\/(?:shorts|embed)\/([^/?]+)/); return p ? p[1] : '' } catch { return '' } }
         function showLogin(msg = '', error = false) { $('appView').classList.add('hidden'); $('loginView').classList.remove('hidden'); if (msg) { $('loginMessage').textContent = msg; $('loginMessage').className = 'message show ' + (error ? 'error' : 'ok') } }
-        function showApp() { $('loginView').classList.add('hidden'); $('appView').classList.remove('hidden'); $('adminEmail').textContent = user?.email || ''; loadAll() }
+        async function showApp() {
+            $('loginView').classList.add('hidden');
+            $('appView').classList.remove('hidden');
+            const profileReady = await loadAdminProfile();
+            if(profileReady === false) return;
+            await logPortalEvent('login','auth','Signed in to the admin portal');
+            loadAll();
+        }
+        async function loadAdminProfile(){
+            const {data,error}=await db.from('admin_profiles').select('*').eq('user_id',user.id).maybeSingle();
+            adminProfile = error ? null : data;
+            if(adminProfile?.must_change_password && !window.__passwordRecovery){
+                showPasswordView(false);
+                return false;
+            }
+            const fullName = adminProfile?.full_name || user?.user_metadata?.full_name || user?.email || 'Administrator';
+            const contact = [adminProfile?.phone,user?.email].filter(Boolean).join(' · ');
+            if($('adminFullName')) $('adminFullName').textContent=fullName;
+            if($('adminContact')) $('adminContact').textContent=contact || 'Administrator';
+            if($('adminInitials')) $('adminInitials').textContent=fullName.split(/\s+/).slice(0,2).map(x=>x[0]).join('').toUpperCase();
+            return true;
+        }
+        async function logPortalEvent(action,area,details=''){
+            try{ await db.rpc('log_admin_event',{p_action:action,p_area:area,p_details:details}); }catch(e){ console.warn('Audit event:',e); }
+        }
+        function formatWhen(v){ if(!v)return '—'; return new Intl.DateTimeFormat('en-ZA',{dateStyle:'medium',timeStyle:'short'}).format(new Date(v)); }
+        async function loadAdminProfiles(){
+            const {data,error}=await db.from('admin_profiles').select('*').eq('is_active',true).order('full_name');
+            if(error){ console.warn(error.message); return; }
+            adminProfiles=data||[];
+            if($('statAdmins')) $('statAdmins').textContent=adminProfiles.length;
+            if($('adminList')) $('adminList').innerHTML=adminProfiles.length?adminProfiles.map(a=>`<div class="admin-person"><div class="admin-avatar">${esc((a.full_name||a.email||'A').split(/\s+/).slice(0,2).map(x=>x[0]).join('').toUpperCase())}</div><div><h4>${esc(a.full_name||'Administrator')}</h4><p>${esc(a.email||'No email')} ${a.phone?' · '+esc(a.phone):''}</p><p>${esc(a.role_label||'Administrator')}</p></div><div class="status-dot">Active</div></div>`).join(''):'<div class="empty">No admin profiles found.</div>';
+        }
+        async function loadAuditLogs(){
+            const {data,error}=await db.from('admin_audit_logs').select('*').order('created_at',{ascending:false}).limit(100);
+            if(error){ console.warn(error.message); return; }
+            auditLogs=data||[];
+            if($('statActivity')) $('statActivity').textContent=auditLogs.length;
+            if($('statLastAction')) $('statLastAction').textContent=auditLogs[0]?new Date(auditLogs[0].created_at).toLocaleTimeString('en-ZA',{hour:'2-digit',minute:'2-digit'}):'—';
+            const render = rows => rows.length?rows.map(x=>`<div class="activity-item"><div class="activity-icon"><i class="fa-solid ${x.action==='login'?'fa-right-to-bracket':'fa-pen-to-square'}"></i></div><div><h4>${esc(x.actor_full_name||x.actor_email||'Administrator')} · ${esc(x.action||'activity')}</h4><p>${esc(x.area||'portal')}${x.details?' — '+esc(x.details):''}</p><p>${esc(x.actor_email||'')}${x.actor_phone?' · '+esc(x.actor_phone):''}</p></div><div class="activity-time">${formatWhen(x.created_at)}</div></div>`).join(''):'<div class="empty">No administrator activity recorded yet.</div>';
+            if($('activityList')) $('activityList').innerHTML=render(auditLogs);
+            if($('dashboardActivity')) $('dashboardActivity').innerHTML=render(auditLogs.slice(0,5));
+        }
         async function verifyAdmin(u) { const { data, error } = await db.rpc('is_admin', { check_uid: u.id }); return !error && data === true }
         async function bootstrap() { const { data: { session } } = await db.auth.getSession(); if (!session) return showLogin(); user = session.user; if (await verifyAdmin(user)) showApp(); else { await db.auth.signOut(); showLogin('This account is not authorised for Echoes of Mercy administration.', true) } }
         $('loginForm').addEventListener('submit', async e => { e.preventDefault(); $('loginMessage').className = 'message'; const { data, error } = await db.auth.signInWithPassword({ email: $('loginEmail').value.trim(), password: $('loginPassword').value }); if (error) return showLogin(error.message, true); user = data.user; if (!(await verifyAdmin(user))) { await db.auth.signOut(); return showLogin('This account exists but is not on the admin list.', true) } showApp() });
-        async function logout() { await db.auth.signOut(); location.reload() } $('logoutBtn').onclick = logout; $('mobileLogout').onclick = logout;
-        function switchTab(name) { document.querySelectorAll('.tab').forEach(x => x.classList.add('hidden')); $('tab-' + name).classList.remove('hidden'); document.querySelectorAll('[data-tab]').forEach(x => x.classList.toggle('active', x.dataset.tab === name)); $('pageTitle').textContent = name === 'dashboard' ? 'Dashboard' : name === 'songs' ? 'Songs' : name === 'artists' ? 'Artists' : 'Latest Update' } document.querySelectorAll('[data-tab]').forEach(b => b.addEventListener('click', () => switchTab(b.dataset.tab)));
+        async function logout() { await logPortalEvent('logout','auth','Signed out of the admin portal'); await db.auth.signOut(); location.reload() } $('logoutBtn').onclick = logout; $('mobileLogout').onclick = logout;
+        function switchTab(name) { document.querySelectorAll('.tab').forEach(x => x.classList.add('hidden')); const tab=$('tab-' + name); if(!tab)return; tab.classList.remove('hidden'); document.querySelectorAll('[data-tab]').forEach(x => x.classList.toggle('active', x.dataset.tab === name)); const titles={dashboard:'Dashboard',songs:'Songs',artists:'Artists',updates:'Latest Update',activity:'Activity',admins:'Admin Team',security:'Security'}; $('pageTitle').textContent=titles[name]||'Admin Portal'; if(name==='activity')loadAuditLogs(); if(name==='admins')loadAdminProfiles(); if(name==='security')loadPasskeys(); } document.querySelectorAll('[data-tab]').forEach(b => b.addEventListener('click', () => switchTab(b.dataset.tab)));
         async function loadSongs() { const { data, error } = await db.from('songs').select('*').order('display_order').order('created_at'); if (error) { toast(error.message); return } songs = data || []; $('statSongs').textContent = songs.filter(s => s.is_published).length; renderSongs(); fillSongSelect() }
         function renderSongs() { const box = $('songList'); if (!songs.length) { box.innerHTML = '<div class="empty">No songs yet.</div>'; return } box.innerHTML = songs.map(s => `<div class="song-row"><img src="https://img.youtube.com/vi/${s.youtube_id}/mqdefault.jpg" alt=""><div><h4>${esc(s.title)}</h4><p>${esc(s.writer || 'Writer not set')} · ${esc(s.duration || 'No duration')} · ${s.is_published ? 'Published' : 'Hidden'}</p><p style="margin-top:3px">${esc(s.youtube_url)}</p></div><div class="row-actions"><button class="icon-btn" onclick="editSong('${s.id}')" title="Edit"><i class="fa-solid fa-pen"></i></button><button class="icon-btn" onclick="deleteSong('${s.id}')" title="Delete"><i class="fa-solid fa-trash"></i></button></div></div>`).join('') }
         function fillSongSelect() { $('updateSong').innerHTML = songs.filter(s => s.is_published).map(s => `<option value="${s.id}">${esc(s.title)}</option>`).join('') }
@@ -2109,7 +2268,89 @@
             }
         };
 
-        async function loadAll() { await Promise.all([loadSongs(), loadArtists(), loadUpdates()]) }
+        async function loadAll() { await Promise.all([loadSongs(), loadArtists(), loadUpdates(), loadAdminProfiles(), loadAuditLogs()]) }
+        if($('refreshActivity')) $('refreshActivity').onclick=loadAuditLogs;
+        
+        function showAuthMessage(id,text,type='ok'){const el=$(id);if(!el)return;el.textContent=text;el.className='message show '+type}
+        function showPasswordView(recovery=false){
+            window.__passwordRecovery=!!recovery;
+            $('loginView')?.classList.add('hidden'); $('appView')?.classList.add('hidden'); $('forgotView')?.classList.add('hidden'); $('passwordView')?.classList.remove('hidden');
+            $('passwordViewTitle').textContent=recovery?'Choose a new password':'Create your private password';
+            $('passwordViewCopy').textContent=recovery?'Your recovery link has been verified. Choose a new private password for this administrator account.':'You are using a temporary administrator password. Create a password known only to you before entering the portal.';
+        }
+        async function saveNewPassword(e){
+            e.preventDefault();
+            const p=$('newPassword').value,c=$('confirmPassword').value;
+            if(p.length<10)return showAuthMessage('passwordMessage','Use at least 10 characters.','error');
+            if(p!==c)return showAuthMessage('passwordMessage','The passwords do not match.','error');
+            const {error}=await db.auth.updateUser({password:p});
+            if(error)return showAuthMessage('passwordMessage',error.message,'error');
+            if(user?.id){
+                await db.from('admin_profiles').update({must_change_password:false,password_changed_at:new Date().toISOString()}).eq('user_id',user.id);
+                await logPortalEvent('password_changed','security',window.__passwordRecovery?'Password changed through recovery':'Temporary password replaced');
+            }
+            window.__passwordRecovery=false;
+            $('passwordView').classList.add('hidden');
+            await showApp();
+        }
+        async function sendPasswordReset(e){
+            e.preventDefault();
+            const email=$('forgotEmail').value.trim();
+            const redirectTo=location.href.split('#')[0].split('?')[0];
+            const {error}=await db.auth.resetPasswordForEmail(email,{redirectTo});
+            if(error)return showAuthMessage('forgotMessage',error.message,'error');
+            showAuthMessage('forgotMessage','If this email belongs to an authorised account, check the inbox for a password reset link.','ok');
+        }
+        async function signInPasskey(){
+            showAuthMessage('loginMessage','Waiting for your device security check…','ok');
+            try{
+                if(!db.auth.signInWithPasskey) throw new Error('Passkey support is unavailable in this browser/library.');
+                const {data,error}=await db.auth.signInWithPasskey();
+                if(error)throw error;
+                user=data?.user||data?.session?.user||null;
+                if(!user){const g=await db.auth.getUser();user=g.data?.user}
+                if(!user)throw new Error('No authenticated user returned.');
+                const ok=await verifyAdmin(user);
+                if(!ok){await db.auth.signOut();throw new Error('This passkey is not authorised for this admin portal.')}
+                await showApp();
+            }catch(e){showAuthMessage('loginMessage',e.message||'Passkey sign-in failed.','error')}
+        }
+        async function registerCurrentPasskey(){
+            try{
+                if(!db.auth.registerPasskey)throw new Error('Passkeys are not enabled for this Supabase project or library.');
+                const {data,error}=await db.auth.registerPasskey();
+                if(error)throw error;
+                await logPortalEvent('passkey_registered','security','Registered a device passkey');
+                toast('Face / fingerprint login is ready');
+                loadPasskeys();
+            }catch(e){toast(e.message||'Could not register passkey')}
+        }
+        async function loadPasskeys(){
+            const box=$('passkeyList'); if(!box)return;
+            try{
+                if(!db.auth.passkey?.list){box.innerHTML='<div class="empty">Passkey management is unavailable until Supabase Passkeys are enabled.</div>';return}
+                const {data,error}=await db.auth.passkey.list(); if(error)throw error;
+                const rows=Array.isArray(data)?data:(data?.passkeys||[]);
+                box.innerHTML=rows.length?rows.map(x=>`<div class="activity-item"><div class="activity-icon"><i class="fa-solid fa-fingerprint"></i></div><div><h4>${esc(x.friendly_name||x.friendlyName||'Device passkey')}</h4><p>Registered ${formatWhen(x.created_at||x.createdAt)}${(x.last_used_at||x.lastUsedAt)?' · Last used '+formatWhen(x.last_used_at||x.lastUsedAt):''}</p></div><div class="status-dot">Ready</div></div>`).join(''):'<div class="empty">No passkeys registered yet.</div>';
+            }catch(e){box.innerHTML=`<div class="empty">${esc(e.message||'Could not load passkeys.')}</div>`}
+        }
+
+        
+        $('forgotPasswordBtn')?.addEventListener('click',()=>{ $('loginView').classList.add('hidden'); $('forgotView').classList.remove('hidden'); $('forgotEmail').value=$('loginEmail').value||''; });
+        $('backToLogin')?.addEventListener('click',()=>{ $('forgotView').classList.add('hidden'); $('loginView').classList.remove('hidden'); });
+        $('forgotForm')?.addEventListener('submit',sendPasswordReset);
+        $('passwordForm')?.addEventListener('submit',saveNewPassword);
+        $('passkeyLoginBtn')?.addEventListener('click',signInPasskey);
+        $('registerPasskey')?.addEventListener('click',registerCurrentPasskey);
+        $('refreshPasskeys')?.addEventListener('click',loadPasskeys);
+        $('changePasswordBtn')?.addEventListener('click',()=>showPasswordView(false));
+        db.auth.onAuthStateChange((event,session)=>{
+            if(event==='PASSWORD_RECOVERY'){
+                user=session?.user||null;
+                showPasswordView(true);
+            }
+        });
+
         renderUpdateFields(); bootstrap();
     </script>
 </body>
