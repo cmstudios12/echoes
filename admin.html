@@ -1464,10 +1464,78 @@
 .security-option h4{margin:0 0 5px;font:800 .9rem Manrope}.security-option p{margin:0 0 13px;color:var(--muted);font-size:.72rem;line-height:1.5}
 @media(max-width:650px){.security-settings{grid-template-columns:1fr}.security-actions{display:grid}.security-actions .btn{width:100%}}
 
+
+/* ===== 2026 ADMIN POLISH ===== */
+body{background:#f5f5fa}
+.login-wrap{
+  min-height:100vh;padding:28px;
+  background:
+    radial-gradient(circle at 12% 15%,rgba(108,76,241,.10),transparent 27%),
+    radial-gradient(circle at 88% 82%,rgba(47,140,255,.08),transparent 30%),
+    #f7f7fb;
+}
+.login-card{width:min(470px,100%);border-radius:28px;padding:30px;border:1px solid #e7e7ef;box-shadow:0 24px 70px rgba(31,27,65,.11)}
+.login-card:before{content:"";display:block;width:54px;height:4px;border-radius:20px;background:linear-gradient(90deg,#6c4cf1,#2f8cff);margin-bottom:22px}
+.login-card h1{font-size:1.85rem;letter-spacing:-.045em;margin-top:25px}
+.login-card>p{font-size:.79rem;line-height:1.65}
+.login-card .field input{min-height:50px;border-radius:13px;background:#fbfbfd}
+.login-card .btn-primary,.passkey-btn{min-height:50px;border-radius:14px}
+.login-card .brand img{width:47px;height:47px}
+.auth-note{border-radius:14px}
+
+.login-loader{position:fixed;inset:0;z-index:9999;background:rgba(247,247,251,.92);backdrop-filter:blur(12px);display:none;place-items:center;padding:22px}
+.login-loader.show{display:grid}
+.loader-card{width:min(330px,100%);text-align:center;background:#fff;border:1px solid #e5e5ed;border-radius:25px;padding:29px;box-shadow:0 24px 70px rgba(31,27,65,.13)}
+.loader-mark{width:64px;height:64px;margin:0 auto 17px;position:relative;display:grid;place-items:center}
+.loader-mark img{width:42px;height:42px;object-fit:contain;border-radius:12px;position:relative;z-index:2}
+.loader-ring{position:absolute;inset:0;border:3px solid #e9e6fb;border-top-color:#6c4cf1;border-radius:50%;animation:adminSpin .8s linear infinite}
+.loader-card strong{display:block;font:800 1rem Manrope;margin-bottom:6px}
+.loader-card span{font-size:.72rem;color:var(--muted);line-height:1.5}
+@keyframes adminSpin{to{transform:rotate(360deg)}}
+
+.sidebar{background:#17182d;padding:18px 13px}
+.sidebar .brand{padding-bottom:18px;margin-bottom:9px;border-bottom:1px solid rgba(255,255,255,.08)}
+.nav-btn{min-height:44px;border-radius:12px;margin:2px 0}
+.nav-btn.active{background:#fff;color:#17182d;box-shadow:0 8px 22px rgba(0,0,0,.16)}
+.topbar{height:76px;background:rgba(255,255,255,.94);backdrop-filter:blur(18px)}
+.content{max-width:1480px;padding-top:27px}
+.page-intro{padding:0 2px;margin-bottom:20px}
+.page-intro h1{font-size:1.65rem;letter-spacing:-.045em}
+.live-chip{background:#eefaf5;border:1px solid #cfeee0;color:#167454}
+.stats{gap:12px;margin-bottom:14px}
+.stat{min-height:128px;border-radius:19px;padding:18px;border:1px solid #e7e7ef;box-shadow:none}
+.stat i{width:40px;height:40px;border-radius:12px}
+.stat b{font-size:1.65rem;margin-top:12px}
+.ops-grid{gap:12px;margin:0 0 18px}
+.ops-card{border-radius:18px;min-height:112px;padding:17px;border:1px solid #e7e7ef;background:#fff}
+.ops-card .icon{width:39px;height:39px;border-radius:12px}
+.panel{border-radius:20px;border:1px solid #e7e7ef;box-shadow:0 8px 28px rgba(31,27,65,.045);overflow:hidden}
+.panel-head{padding:18px 20px;background:#fff}
+.panel-body{padding:20px}
+.dashboard-grid{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(320px,.75fr);gap:16px;align-items:start}
+.dashboard-grid .panel{margin:0}
+.dashboard-stack{display:grid;gap:16px}
+.quick-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.quick-action{border:1px solid #e7e7ef;background:#fff;border-radius:15px;padding:15px;text-align:left;cursor:pointer;transition:.18s ease}
+.quick-action:hover{transform:translateY(-2px);border-color:#cfc8fa;box-shadow:0 9px 25px rgba(44,35,94,.07)}
+.quick-action i{width:34px;height:34px;border-radius:10px;background:#f0edff;color:#6c4cf1;display:grid;place-items:center;margin-bottom:10px}
+.quick-action b{display:block;font:800 .78rem Manrope;color:#24243a}.quick-action span{display:block;font-size:.65rem;color:var(--muted);margin-top:3px}
+@media(max-width:1000px){.dashboard-grid{grid-template-columns:1fr}}
+@media(max-width:620px){.login-wrap{padding:14px}.login-card{padding:22px;border-radius:22px}.quick-actions{grid-template-columns:1fr}.stat{min-height:108px}}
+
 </style>
 </head>
 
 <body>
+
+<div class="login-loader" id="loginLoader" aria-live="polite">
+  <div class="loader-card">
+    <div class="loader-mark"><div class="loader-ring"></div><img src="logo.png" alt=""></div>
+    <strong id="loaderTitle">Securing your session</strong>
+    <span id="loaderText">Verifying your administrator account and loading the operations portal…</span>
+  </div>
+</div>
+
     <section class="login-wrap" id="loginView">
         <div class="login-card">
             <div class="brand"><img src="logo.png" alt="Echoes of Mercy">
@@ -1565,31 +1633,42 @@
                         <div class="stat"><i class="fa-solid fa-image"></i><b id="statPosters">0</b><span>Poster
                                 updates</span></div>
                     </div>
-                    
-<div class="ops-grid">
-  <div class="ops-card"><div class="icon"><i class="fa-solid fa-users-gear"></i></div><b id="statAdmins">0</b><span>Authorised administrators</span></div>
-  <div class="ops-card"><div class="icon"><i class="fa-solid fa-clock-rotate-left"></i></div><b id="statActivity">0</b><span>Recorded admin actions</span></div>
-  <div class="ops-card"><div class="icon"><i class="fa-solid fa-user-clock"></i></div><b id="statLastAction">—</b><span>Latest portal activity</span></div>
-  <div class="ops-card"><div class="icon"><i class="fa-solid fa-shield-halved"></i></div><b>RLS</b><span>Database access protected</span></div>
-</div>
-<div class="panel">
-  <div class="panel-head"><div class="panel-head-left"><div class="section-icon"><i class="fa-solid fa-wave-square"></i></div><div><h3>Recent administrator activity</h3><p>See who changed what across the website.</p></div></div>
-  <button class="btn btn-light" type="button" onclick="switchTab('activity')"><i class="fa-solid fa-list"></i> Full audit trail</button></div>
-  <div class="panel-body"><div id="dashboardActivity" class="activity-list"><div class="empty">Loading activity…</div></div></div>
-</div>
-<div class="panel">
-                        <div class="panel-head">
-                            <div>
-                                <h3>Live website control</h3>
-                                <p>Changes saved here are read directly by index.html through Supabase.</p>
-                            </div><a class="btn btn-light" href="index.html" target="_blank"><i
-                                    class="fa-solid fa-eye"></i> View site</a>
-                        </div>
-                        <div class="panel-body">
-                            <div id="dashboardPreview" class="empty">Loading latest website update…</div>
-                        </div>
+                    <div class="ops-grid">
+                      <div class="ops-card"><div class="icon"><i class="fa-solid fa-users-gear"></i></div><b id="statAdmins">0</b><span>Authorised administrators</span></div>
+                      <div class="ops-card"><div class="icon"><i class="fa-solid fa-clock-rotate-left"></i></div><b id="statActivity">0</b><span>Recorded admin actions</span></div>
+                      <div class="ops-card"><div class="icon"><i class="fa-solid fa-user-clock"></i></div><b id="statLastAction">—</b><span>Latest portal activity</span></div>
+                      <div class="ops-card"><div class="icon"><i class="fa-solid fa-shield-halved"></i></div><b>Protected</b><span>Row-level database security</span></div>
                     </div>
-                </section>
+
+                    <div class="dashboard-grid">
+                      <div class="panel">
+                        <div class="panel-head">
+                          <div class="panel-head-left"><div class="section-icon"><i class="fa-solid fa-wave-square"></i></div>
+                          <div><h3>Recent administrator activity</h3><p>Latest actions across songs, artists, updates and account access.</p></div></div>
+                          <button class="btn btn-light" type="button" onclick="switchTab('activity')"><i class="fa-solid fa-arrow-right"></i> View all</button>
+                        </div>
+                        <div class="panel-body"><div id="dashboardActivity" class="activity-list"><div class="empty">Loading activity…</div></div></div>
+                      </div>
+
+                      <div class="dashboard-stack">
+                        <div class="panel">
+                          <div class="panel-head"><div><h3>Quick actions</h3><p>Jump straight to common website tasks.</p></div></div>
+                          <div class="panel-body">
+                            <div class="quick-actions">
+                              <button class="quick-action" type="button" onclick="switchTab('songs')"><i class="fa-solid fa-music"></i><b>Manage songs</b><span>Music library</span></button>
+                              <button class="quick-action" type="button" onclick="switchTab('artists')"><i class="fa-solid fa-users"></i><b>Manage artists</b><span>Profiles & photos</span></button>
+                              <button class="quick-action" type="button" onclick="switchTab('updates')"><i class="fa-solid fa-bullhorn"></i><b>Publish update</b><span>Website notices</span></button>
+                              <button class="quick-action" type="button" onclick="switchTab('security')"><i class="fa-solid fa-shield-halved"></i><b>Account security</b><span>Password & passkeys</span></button>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="panel">
+                          <div class="panel-head"><div><h3>Public website</h3><p>Review what visitors currently see.</p></div><a class="btn btn-light" href="index.html" target="_blank"><i class="fa-solid fa-arrow-up-right-from-square"></i> Open</a></div>
+                          <div class="panel-body"><div id="dashboardPreview" class="empty">Loading current website update…</div></div>
+                        </div>
+                      </div>
+                    </div>
+</section>
 
                 <section class="tab hidden" id="tab-songs">
                     <div class="panel">
@@ -1905,9 +1984,10 @@
             $('loginView').classList.add('hidden');
             $('appView').classList.remove('hidden');
             const profileReady = await loadAdminProfile();
-            if(profileReady === false) return;
+            if(profileReady === false){ $('loginLoader')?.classList.remove('show'); return; }
             await logPortalEvent('login','auth','Signed in to the admin portal');
-            loadAll();
+            await loadAll();
+            setTimeout(()=>$('loginLoader')?.classList.remove('show'),260);
         }
         async function loadAdminProfile(){
             const {data,error}=await db.from('admin_profiles').select('*').eq('user_id',user.id).maybeSingle();
@@ -1945,8 +2025,52 @@
             if($('dashboardActivity')) $('dashboardActivity').innerHTML=render(auditLogs.slice(0,5));
         }
         async function verifyAdmin(u) { const { data, error } = await db.rpc('is_admin', { check_uid: u.id }); return !error && data === true }
-        async function bootstrap() { const { data: { session } } = await db.auth.getSession(); if (!session) return showLogin(); user = session.user; if (await verifyAdmin(user)) showApp(); else { await db.auth.signOut(); showLogin('This account is not authorised for Echoes of Mercy administration.', true) } }
-        $('loginForm').addEventListener('submit', async e => { e.preventDefault(); $('loginMessage').className = 'message'; const { data, error } = await db.auth.signInWithPassword({ email: $('loginEmail').value.trim(), password: $('loginPassword').value }); if (error) return showLogin(error.message, true); user = data.user; if (!(await verifyAdmin(user))) { await db.auth.signOut(); return showLogin('This account exists but is not on the admin list.', true) } showApp() });
+        async function bootstrap() {
+            try {
+                const { data: { session } } = await db.auth.getSession();
+                if (!session) { $('loginLoader')?.classList.remove('show'); return showLogin(); }
+                user = session.user;
+                if (await verifyAdmin(user)) await showApp();
+                else {
+                    await db.auth.signOut();
+                    $('loginLoader')?.classList.remove('show');
+                    showLogin('This account is not authorised for Echoes of Mercy administration.', true);
+                }
+            } catch (error) {
+                $('loginLoader')?.classList.remove('show');
+                showLogin(error.message || 'The admin portal could not start.', true);
+            }
+        }
+        $('loginForm').addEventListener('submit', async e => {
+            e.preventDefault();
+            $('loginMessage').className='message';
+            const btn=e.submitter || $('loginForm').querySelector('button[type="submit"]');
+            const original=btn.innerHTML;
+            btn.disabled=true;
+            btn.innerHTML='<i class="fa-solid fa-circle-notch fa-spin"></i> Verifying account';
+            $('loginLoader').classList.add('show');
+            try{
+                const {data,error}=await db.auth.signInWithPassword({
+                    email:$('loginEmail').value.trim(),
+                    password:$('loginPassword').value
+                });
+                if(error) throw error;
+                user=data.user;
+                if(!(await verifyAdmin(user))){
+                    await db.auth.signOut();
+                    throw new Error('This account exists but is not authorised for this admin portal.');
+                }
+                $('loaderTitle').textContent='Welcome back';
+                $('loaderText').textContent='Loading your administrator profile, website data and security status…';
+                await showApp();
+            }catch(error){
+                $('loginLoader').classList.remove('show');
+                showLogin(error.message||'Sign in failed. Please try again.',true);
+            }finally{
+                btn.disabled=false;
+                btn.innerHTML=original;
+            }
+        });
         async function logout() { await logPortalEvent('logout','auth','Signed out of the admin portal'); await db.auth.signOut(); location.reload() } $('logoutBtn').onclick = logout; $('mobileLogout').onclick = logout;
         function switchTab(name) { document.querySelectorAll('.tab').forEach(x => x.classList.add('hidden')); const tab=$('tab-' + name); if(!tab)return; tab.classList.remove('hidden'); document.querySelectorAll('[data-tab]').forEach(x => x.classList.toggle('active', x.dataset.tab === name)); const titles={dashboard:'Dashboard',songs:'Songs',artists:'Artists',updates:'Latest Update',activity:'Activity',admins:'Admin Team',security:'Security'}; $('pageTitle').textContent=titles[name]||'Admin Portal'; if(name==='activity')loadAuditLogs(); if(name==='admins')loadAdminProfiles(); if(name==='security')loadPasskeys(); } document.querySelectorAll('[data-tab]').forEach(b => b.addEventListener('click', () => switchTab(b.dataset.tab)));
         async function loadSongs() { const { data, error } = await db.from('songs').select('*').order('display_order').order('created_at'); if (error) { toast(error.message); return } songs = data || []; $('statSongs').textContent = songs.filter(s => s.is_published).length; renderSongs(); fillSongSelect() }
