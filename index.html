@@ -2534,6 +2534,112 @@ position: relative;
 @media(max-width:980px){.group-photo-wrap{grid-template-columns:1fr;gap:30px}.group-photo-copy{max-width:680px}}
 @media(max-width:640px){.group-photo-section{padding:62px 0}.group-photo-wrap{gap:24px}.group-photo-frame{padding:7px;border-radius:23px}.group-photo-media{border-radius:18px;aspect-ratio:4/3}.group-photo-frame:before{width:72px;height:72px;left:-10px;top:-10px;border-radius:20px}.group-photo-frame:after{width:58px;height:58px;right:-9px;bottom:-9px}.group-photo-label{left:16px;bottom:15px;padding:8px 10px;border-radius:11px;font-size:.67rem}}
 
+
+/* ===== PROFESSIONAL MOBILE NAVIGATION ===== */
+@media(max-width:980px){
+  .menu-toggle{
+    display:grid;
+    place-items:center;
+    width:46px;height:46px;
+    padding:0;border:1px solid #e4e3ec;
+    border-radius:14px;background:#fff;color:var(--ink);
+    box-shadow:0 7px 20px rgba(40,35,80,.07);
+    position:relative;z-index:131;
+    transition:background .2s,border-color .2s,transform .2s,box-shadow .2s;
+  }
+  .menu-toggle:hover{background:#f8f7ff;border-color:#d7d1ff;box-shadow:0 10px 26px rgba(50,42,100,.11)}
+  .menu-toggle.active{background:#1f2140;color:#fff;border-color:#1f2140;transform:none}
+  .menu-toggle .hamburger-lines{width:20px;height:14px;position:relative;display:block}
+  .menu-toggle .hamburger-lines span{position:absolute;left:0;width:20px;height:2px;border-radius:20px;background:currentColor;transition:transform .25s,top .25s,opacity .2s}
+  .menu-toggle .hamburger-lines span:nth-child(1){top:0}
+  .menu-toggle .hamburger-lines span:nth-child(2){top:6px;width:15px;left:5px}
+  .menu-toggle .hamburger-lines span:nth-child(3){top:12px}
+  .menu-toggle.active .hamburger-lines span:nth-child(1){top:6px;transform:rotate(45deg)}
+  .menu-toggle.active .hamburger-lines span:nth-child(2){opacity:0;transform:translateX(5px)}
+  .menu-toggle.active .hamburger-lines span:nth-child(3){top:6px;transform:rotate(-45deg)}
+
+  .menu-backdrop{
+    display:block;position:fixed;inset:0;z-index:118;
+    background:rgba(20,21,42,.46);
+    backdrop-filter:blur(5px);
+    opacity:0;visibility:hidden;pointer-events:none;
+    transition:opacity .28s ease,visibility .28s ease;
+  }
+  .menu-backdrop.show{opacity:1;visibility:visible;pointer-events:auto}
+
+  .mobile-menu{
+    display:flex;flex-direction:column;
+    position:fixed;z-index:125;
+    top:0;right:0;left:auto;
+    width:min(390px,92vw);height:100dvh;
+    padding:0;background:#fff;
+    border:0;border-left:1px solid #ecebf2;border-radius:0;
+    box-shadow:-28px 0 80px rgba(23,24,45,.18);
+    opacity:1;visibility:hidden;pointer-events:none;
+    transform:translateX(105%);
+    transform-origin:right center;
+    transition:transform .34s cubic-bezier(.22,.8,.24,1),visibility .34s;
+    overflow-y:auto;
+  }
+  .mobile-menu.show{opacity:1;visibility:visible;pointer-events:auto;transform:translateX(0)}
+
+  .mobile-menu-head{
+    display:flex;align-items:center;justify-content:space-between;gap:14px;
+    min-height:84px;padding:15px 18px;
+    border-bottom:1px solid #ecebf2;background:#fff;
+    position:sticky;top:0;z-index:2;
+  }
+  .mobile-menu-brand{display:flex;align-items:center;gap:11px;min-width:0}
+  .mobile-menu-brand img{width:44px;height:44px;object-fit:contain;border:1px solid var(--line);border-radius:12px;padding:2px;background:#fff}
+  .mobile-menu-brand strong{display:block;font:800 .86rem Manrope;color:var(--ink);white-space:nowrap}
+  .mobile-menu-brand span{display:block;font-size:.65rem;color:var(--muted);margin-top:2px}
+  .mobile-menu-close{
+    width:40px;height:40px;flex:0 0 40px;border:1px solid #e6e5ee;border-radius:12px;
+    background:#f8f8fb;color:#353650;display:grid;place-items:center;font-size:.9rem;
+  }
+
+  .mobile-menu-body{padding:17px 16px 12px}
+  .mobile-menu-label{
+    display:block;padding:0 9px 9px;color:#9a9bad;
+    font-size:.61rem;font-weight:900;letter-spacing:.15em;text-transform:uppercase;
+  }
+  .mobile-menu a.mobile-nav-link{
+    min-height:54px;padding:10px 11px;margin:2px 0;border-radius:14px;
+    display:flex;align-items:center;justify-content:flex-start;gap:12px;
+    color:#3f415d;font-weight:800;font-size:.88rem;
+    transition:background .18s,color .18s,transform .18s;
+  }
+  .mobile-menu a.mobile-nav-link:after{content:none}
+  .mobile-menu a.mobile-nav-link:hover{background:#f5f3ff;color:var(--purple);transform:translateX(2px)}
+  .mobile-nav-icon{
+    width:36px;height:36px;flex:0 0 36px;border-radius:11px;
+    display:grid;place-items:center;background:#f3f1ff;color:var(--purple);font-size:.82rem;
+  }
+  .mobile-nav-copy{display:flex;flex-direction:column;line-height:1.2}
+  .mobile-nav-copy small{font-size:.61rem;color:#9a9bad;font-weight:600;margin-top:3px}
+  .mobile-nav-arrow{margin-left:auto;color:#b0b1c0;font-size:.66rem}
+
+  .mobile-menu-cta{
+    margin:9px 16px 0;padding:17px;border-radius:18px;
+    background:linear-gradient(135deg,#262843,#34305e);
+    color:#fff;
+  }
+  .mobile-menu-cta small{display:block;color:#c8c9dc;font-size:.66rem;margin-bottom:5px}
+  .mobile-menu-cta strong{display:block;font:800 .95rem Manrope;margin-bottom:13px}
+  .mobile-menu-cta .btn{width:100%;min-height:46px;border-radius:13px;background:#fff;color:#252744;box-shadow:none}
+
+  .mobile-menu-foot{
+    margin-top:auto;padding:18px 20px 22px;border-top:1px solid #ecebf2;
+    color:#8c8ea2;font-size:.66rem;line-height:1.55;background:#fcfcfe;
+  }
+  body.menu-open{overflow:hidden}
+}
+@media(max-width:640px){
+  .menu-toggle{width:43px;height:43px;border-radius:12px}
+  .mobile-menu{width:min(360px,94vw)}
+  .mobile-menu-head{min-height:74px;padding:12px 14px}
+}
+
 </style>
 </head>
 
@@ -2547,11 +2653,34 @@ position: relative;
             <nav class="nav-links" aria-label="Main navigation"><a href="#music">Music</a><a href="artists.html">Our Artists</a><a href="other-services.html">Other Services</a><a href="#about">Our
                     Story</a><a href="#purpose">Mission</a><a href="#contact">Bookings</a></nav>
             <div class="nav-actions"><a class="btn btn-primary" href="#contact"><i
-                        class="fa-solid fa-calendar-check"></i> Book the Group</a><button class="menu-toggle"
-                    id="menuToggle" aria-label="Open menu"><i class="fa-solid fa-bars"></i></button></div>
+                        class="fa-solid fa-calendar-check"></i> Book the Group</a><button class="menu-toggle" id="menuToggle" aria-label="Open navigation menu" aria-controls="mobileMenu" aria-expanded="false">
+                    <span class="hamburger-lines" aria-hidden="true"><span></span><span></span><span></span></span>
+                </button></div>
         </div>
-        <nav class="mobile-menu" id="mobileMenu" aria-hidden="true"><a href="#music">Music</a><a href="artists.html">Our Artists</a><a href="other-services.html">Other Services</a><a href="#about">Our
-                Story</a><a href="#purpose">Mission</a><a href="#contact">Bookings</a></nav>
+        <nav class="mobile-menu" id="mobileMenu" aria-hidden="true" aria-label="Mobile navigation">
+            <div class="mobile-menu-head">
+                <div class="mobile-menu-brand">
+                    <img src="logo.png" alt="">
+                    <div><strong>Echoes of Mercy</strong><span>Official Website</span></div>
+                </div>
+                <button class="mobile-menu-close" id="mobileMenuClose" type="button" aria-label="Close navigation menu"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="mobile-menu-body">
+                <span class="mobile-menu-label">Explore</span>
+                <a class="mobile-nav-link" href="#music"><span class="mobile-nav-icon"><i class="fa-solid fa-music"></i></span><span class="mobile-nav-copy">Music<small>Listen to our releases</small></span><i class="fa-solid fa-chevron-right mobile-nav-arrow"></i></a>
+                <a class="mobile-nav-link" href="artists.html"><span class="mobile-nav-icon"><i class="fa-solid fa-users"></i></span><span class="mobile-nav-copy">Our Artists<small>Meet the group</small></span><i class="fa-solid fa-chevron-right mobile-nav-arrow"></i></a>
+                <a class="mobile-nav-link" href="other-services.html"><span class="mobile-nav-icon"><i class="fa-solid fa-layer-group"></i></span><span class="mobile-nav-copy">Other Services<small>Event support & services</small></span><i class="fa-solid fa-chevron-right mobile-nav-arrow"></i></a>
+                <a class="mobile-nav-link" href="#about"><span class="mobile-nav-icon"><i class="fa-solid fa-book-open"></i></span><span class="mobile-nav-copy">Our Story<small>Who we are</small></span><i class="fa-solid fa-chevron-right mobile-nav-arrow"></i></a>
+                <a class="mobile-nav-link" href="#purpose"><span class="mobile-nav-icon"><i class="fa-solid fa-compass"></i></span><span class="mobile-nav-copy">Mission<small>Our purpose & faith</small></span><i class="fa-solid fa-chevron-right mobile-nav-arrow"></i></a>
+                <a class="mobile-nav-link" href="#contact"><span class="mobile-nav-icon"><i class="fa-solid fa-calendar-check"></i></span><span class="mobile-nav-copy">Bookings<small>Invite Echoes of Mercy</small></span><i class="fa-solid fa-chevron-right mobile-nav-arrow"></i></a>
+            </div>
+            <div class="mobile-menu-cta">
+                <small>Bookings & enquiries</small>
+                <strong>Bring Echoes of Mercy to your event.</strong>
+                <a class="btn" href="#contact"><i class="fa-solid fa-calendar-check"></i> Make a booking</a>
+            </div>
+            <div class="mobile-menu-foot">Echoes of Mercy Gospel Group<br>Tonga, Mpumalanga, South Africa</div>
+        </nav>
         <div class="menu-backdrop" id="menuBackdrop" aria-hidden="true"></div>
     </header>
 
@@ -2905,14 +3034,37 @@ position: relative;
     </div>
 
     <script>
-        const menuToggle = document.getElementById('menuToggle'), mobileMenu = document.getElementById('mobileMenu'), menuBackdrop = document.getElementById('menuBackdrop');
-        const setMenu = (open) => { mobileMenu.classList.toggle('show', open); menuBackdrop.classList.toggle('show', open); menuToggle.classList.toggle('active', open); menuToggle.setAttribute('aria-expanded', String(open)); mobileMenu.setAttribute('aria-hidden', String(!open)); menuBackdrop.setAttribute('aria-hidden', String(!open)); menuToggle.innerHTML = open ? '<i class="fa-solid fa-xmark"></i>' : '<i class="fa-solid fa-bars"></i>'; };
-        menuToggle.setAttribute('aria-expanded', 'false');
-        menuToggle.addEventListener('click', e => { e.stopPropagation(); setMenu(!mobileMenu.classList.contains('show')) });
+        const menuToggle = document.getElementById('menuToggle'),
+              mobileMenu = document.getElementById('mobileMenu'),
+              menuBackdrop = document.getElementById('menuBackdrop'),
+              mobileMenuClose = document.getElementById('mobileMenuClose');
+
+        const setMenu = (open) => {
+            mobileMenu.classList.toggle('show', open);
+            menuBackdrop.classList.toggle('show', open);
+            menuToggle.classList.toggle('active', open);
+            document.body.classList.toggle('menu-open', open);
+            menuToggle.setAttribute('aria-expanded', String(open));
+            menuToggle.setAttribute('aria-label', open ? 'Close navigation menu' : 'Open navigation menu');
+            mobileMenu.setAttribute('aria-hidden', String(!open));
+            menuBackdrop.setAttribute('aria-hidden', String(!open));
+            if(open) setTimeout(() => mobileMenuClose?.focus(), 180);
+        };
+
+        menuToggle.addEventListener('click', e => {
+            e.stopPropagation();
+            setMenu(!mobileMenu.classList.contains('show'));
+        });
+        mobileMenuClose?.addEventListener('click', () => { setMenu(false); menuToggle.focus(); });
         menuBackdrop.addEventListener('click', () => setMenu(false));
         mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setMenu(false)));
-        window.addEventListener('resize', () => { if (window.innerWidth > 980) setMenu(false) });
-        document.addEventListener('keydown', e => { if (e.key === 'Escape' && mobileMenu.classList.contains('show')) setMenu(false) });
+        window.addEventListener('resize', () => { if (window.innerWidth > 980) setMenu(false); });
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Escape' && mobileMenu.classList.contains('show')) {
+                setMenu(false);
+                menuToggle.focus();
+            }
+        });
 
         const socialFab = document.getElementById('socialFab'); document.getElementById('fabMain').addEventListener('click', () => socialFab.classList.toggle('open')); document.addEventListener('click', e => { if (!socialFab.contains(e.target)) socialFab.classList.remove('open') });
         document.getElementById('shareBtn').addEventListener('click', async () => { const data = { title: 'Echoes of Mercy Gospel Group', text: 'Visit the official Echoes of Mercy Gospel Group website.', url: location.href }; try { if (navigator.share) await navigator.share(data); else { await navigator.clipboard.writeText(location.href); alert('Website link copied to clipboard.') } } catch (e) { } });
